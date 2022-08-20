@@ -1,5 +1,5 @@
 {
-    "name": "atomico-base",
+    "name": "example",
     "description": "a repo to start with atomico",
     "meta": {
         "title": "Started - Atomico + Storybook(JS,JSX,TS,TSX)",
@@ -20,7 +20,7 @@
         "build-storybook": "build-storybook"
     },
     "dependencies": {
-        "atomico": "^1.45.1"
+        "atomico": "latest"
     },
     "devDependencies": {
         "@atomico/scaffold": "^0.2.0",
@@ -32,6 +32,8 @@
         "@storybook/html": "^6.5.0-alpha.14",
         "@storybook/manager-webpack5": "^6.5.0-alpha.14",
         "babel-loader": "^8.2.3",
-        "@atomico/storybook": "*"
+        "@atomico/storybook": "*",
+        "@atomico/lit-html": "latest",
+        "@atomico/uhtml": "latest"
     }
 }

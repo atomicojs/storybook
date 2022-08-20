@@ -8,7 +8,8 @@
         "access": "public"
     },
     "scripts": {
-        "build": "src/index.ts --types --exports"
+        "exports": "exports src/*.ts --types --exports --main decorator",
+        "exports:publish": "exports src/*.ts --types --exports --main decorator --publish"
     },
     "keywords": [],
     "author": "",
