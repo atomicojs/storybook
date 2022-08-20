@@ -1,12 +1,16 @@
 {
-  "private": true,
-  "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
-  },
-  "dependencies": {
-    "@atomico/exports": "latest"
-  },
-  "workspaces": [
-    "packages/*"
-  ]
+    "private": true,
+    "scripts": {
+        "build": "npm run build -w=@atomico/storybook"
+    },
+    "dependencies": {
+        "@atomico/exports": "latest"
+    },
+    "workspaces": [
+        "packages/*"
+    ],
+    "prettier": {
+        "tabWidth": 4,
+        "singleQuote": false
+    }
 }

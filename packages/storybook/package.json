@@ -1,27 +1,27 @@
 {
-  "name": "@atomico/storybook",
-  "version": "1.0.0",
-  "public": true,
-  "description": "Render Atomico's virtualDOM in Storybook",
-  "type": "module",
-  "publishConfig": {
-    "access": "public"
-  },
-  "scripts": {
-    "exports": "src/index.ts --types --exports"
-  },
-  "keywords": [],
-  "author": "",
-  "license": "ISC",
-  "dependencies": {
-    "atomico": "latest",
-    "@storybook/csf": "latest"
-  },
-  "devDependencies": {
-    "@atomico/tsconfig": "latest"
-  },
-  "peerDependencies": {
-    "atomico": "latest",
-    "@storybook/csf": "latest"
-  }
+    "name": "@atomico/storybook",
+    "version": "1.0.0",
+    "public": true,
+    "description": "Render Atomico's virtualDOM in Storybook",
+    "type": "module",
+    "publishConfig": {
+        "access": "public"
+    },
+    "scripts": {
+        "build": "src/index.ts --types --exports"
+    },
+    "keywords": [],
+    "author": "",
+    "license": "ISC",
+    "dependencies": {
+        "atomico": "latest",
+        "@storybook/csf": "latest"
+    },
+    "devDependencies": {
+        "@atomico/tsconfig": "latest"
+    },
+    "peerDependencies": {
+        "atomico": "latest",
+        "@storybook/csf": "latest"
+    }
 }
