@@ -6,7 +6,8 @@
         "start": "npm run storybook -w=example"
     },
     "dependencies": {
-        "@atomico/exports": "latest"
+        "@atomico/exports": "latest",
+        "typescript": "^4.7.4"
     },
     "workspaces": [
         "packages/*"
