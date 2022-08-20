@@ -1,6 +1,6 @@
 {
     "name": "@atomico/storybook",
-    "version": "1.0.1",
+    "version": "1.0.2",
     "public": true,
     "description": "Render Atomico's virtualDOM in Storybook",
     "type": "module",
@@ -24,5 +24,18 @@
     "peerDependencies": {
         "atomico": "latest",
         "@storybook/csf": "latest"
+    },
+    "module": "./dist/decorator.js",
+    "exports": {
+        "./decorator": "./dist/decorator.js",
+        ".": "./dist/decorator.js"
+    },
+    "types": "types/decorator.d.ts",
+    "typesVersions": {
+        "*": {
+            "decorator": [
+                "./types/decorator.d.ts"
+            ]
+        }
     }
 }
