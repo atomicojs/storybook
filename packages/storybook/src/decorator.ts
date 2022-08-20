@@ -8,6 +8,7 @@ const cache: {
 export const decorator: DecoratorFunction = (Story, context) => {
     if (!cache[context.id]) {
         cache[context.id] = document.createElement("div");
+        cache[context.id].className = "atomico-decorator-wrapper";
     }
     let result = Story() as
         | any[]
@@ -15,7 +16,10 @@ export const decorator: DecoratorFunction = (Story, context) => {
         | string;
 
     if (typeof result === "string") {
-        result = html.call(null, [result]);
+        return render(
+            h("host", null, html.call(null, [result])),
+            cache[context.id]
+        );
     } else if (result instanceof Node) {
         return result;
     } else if (Array.isArray(result) || result.$$) {

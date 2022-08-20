@@ -8,7 +8,7 @@
         "access": "public"
     },
     "scripts": {
-        "exports": "exports src/*.ts --types --exports --main decorator",
+        "exports": "exports src/*.ts --types --exports --main decorator --watch",
         "exports:publish": "exports src/*.ts --types --exports --main decorator --publish"
     },
     "keywords": [],
