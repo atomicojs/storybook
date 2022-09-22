@@ -1,5 +1,4 @@
 if (module && module.hot && module.hot.decline) {
-    console.log(module);
     module.hot.decline();
     const hmr = new EventSource("__webpack_hmr");
     hmr.addEventListener("message", function fullPageReload(event) {
