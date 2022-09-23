@@ -9,7 +9,7 @@
     },
     "scripts": {
         "exports": "exports src/*.ts --types --exports --main decorator",
-        "exports:publish": "exports src/*.ts --types --exports --main decorator --publish"
+        "prepublishOnly": "npm run exports"
     },
     "keywords": [],
     "author": "",
