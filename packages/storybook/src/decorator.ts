@@ -1,11 +1,24 @@
 import { DecoratorFunction } from "@storybook/csf";
 import { h, render, html } from "atomico";
+import { addons } from "@storybook/addons";
+import { SNIPPET_RENDERED } from "@storybook/docs-tools";
+import { serialize } from "./serialize";
 
 const cache: {
     [id: string]: Element;
 } = {};
 
 class Wrapper extends HTMLElement {
+    connectedCallback() {
+        requestIdleCallback(() => {
+            const channel = addons.getChannel();
+            channel.emit(
+                SNIPPET_RENDERED,
+                this.dataset.id,
+                serialize(this.childNodes)
+            );
+        });
+    }
     disconnectedCallback() {
         delete cache[this.dataset.id];
     }
@@ -25,17 +38,13 @@ export const decorator: DecoratorFunction = (Story, context) => {
         | string;
 
     if (typeof result === "string") {
-        return render(
-            h("host", null, html.call(null, [result])),
-            cache[context.id]
-        );
+        render(h("host", null, html.call(null, [result])), cache[context.id]);
     } else if (result instanceof Node) {
-        return result;
+        cache[context.id].append(result);
     } else if (Array.isArray(result) || result.$$) {
         render(h("host", null, result), cache[context.id]);
-        return cache[context.id];
     } else if (result.render) {
         result.render(cache[context.id]);
-        return cache[context.id];
     }
+    return cache[context.id];
 };
