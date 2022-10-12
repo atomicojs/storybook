@@ -29,8 +29,8 @@ export const agsTypes = {
 };
 
 export const argsTypesReg = [
-    [/color/, "color"],
-    [/date/, "date"],
+    { regExp: /color/, control: "color" },
+    { regExp: /date/, control: "date" },
 ];
 
 export function defineArgTypes(
@@ -46,8 +46,15 @@ export function defineArgTypes(
         const value = props[prop]?.value;
         if (rewrite?.[prop] === false) continue;
 
+        const autoControl = argsTypesReg.find(({ regExp }) =>
+            regExp.test(prop)
+        );
+
+        const control =
+            autoControl?.control || agsTypes[type?.name || "default"];
+
         argsTypes[prop] = {
-            control: agsTypes[type?.name || "default"],
+            control,
             ...rewrite?.[prop],
             ...(value != null
                 ? {
