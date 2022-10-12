@@ -1,5 +1,4 @@
-import { addons, useEffect } from "@storybook/addons";
-import { DecoratorFunction } from "@storybook/csf";
+import { addons, useEffect, DecoratorFunction } from "@storybook/addons";
 import { SNIPPET_RENDERED } from "@storybook/docs-tools";
 import { h, render, html } from "atomico";
 import { serialize } from "./serialize";

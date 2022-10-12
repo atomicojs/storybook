@@ -1,7 +1,7 @@
+import { ArgType } from "@storybook/addons";
 import { Atomico } from "atomico/types/dom";
-import { InputType } from "@storybook/csf";
 
-interface Input extends InputType {
+interface Input extends ArgType {
     control?:
         | "boolean"
         | "number"

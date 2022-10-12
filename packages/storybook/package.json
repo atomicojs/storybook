@@ -16,12 +16,12 @@
     "license": "ISC",
     "devDependencies": {
         "atomico": "latest",
-        "@storybook/csf": "latest",
+        "@storybook/addons": "latest",
         "@atomico/tsconfig": "latest"
     },
     "peerDependencies": {
-        "atomico": "latest",
-        "@storybook/csf": "latest"
+        "atomico": "*",
+        "@storybook/addons": "*"
     },
     "module": "./dist/decorator.js",
     "exports": {
