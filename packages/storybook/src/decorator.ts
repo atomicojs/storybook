@@ -40,6 +40,7 @@ export const decorator: DecoratorFunction = (Story, context) => {
     if (typeof result === "string") {
         render(h("host", null, html.call(null, [result])), cache[context.id]);
     } else if (result instanceof Node) {
+        cache[context.id].innerHTML = "";
         cache[context.id].append(result);
     } else if (Array.isArray(result) || result.$$) {
         render(h("host", null, result), cache[context.id]);

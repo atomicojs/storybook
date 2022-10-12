@@ -1,24 +1,19 @@
-import { template, html } from "atomico";
+import { html } from "atomico";
 import { Brand } from "./brand";
+import { defineArgTypes } from "@atomico/storybook/utils";
 import { html as litHTML } from "@atomico/lit-html";
 import { html as uHTML } from "@atomico/uhtml";
 
 export default {
     title: "components/brand",
-    argTypes: {
-        color: { control: "color" },
-        width: {
-            control: { type: "text" },
+    argTypes: defineArgTypes(Brand, {
+        color: {
+            control: "color",
         },
-    },
+    }),
 };
 
 export const ExampleJSX = (props: any) => <Brand {...props}></Brand>;
-
-ExampleJSX.args = {
-    color: "black",
-    width: "280px",
-};
 
 export const ExampleHTML = (props) => html`<${Brand} ...${props}></${Brand}>`;
 

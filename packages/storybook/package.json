@@ -14,11 +14,9 @@
     "keywords": [],
     "author": "",
     "license": "ISC",
-    "dependencies": {
-        "atomico": "latest",
-        "@storybook/csf": "latest"
-    },
     "devDependencies": {
+        "atomico": "latest",
+        "@storybook/csf": "latest",
         "@atomico/tsconfig": "latest"
     },
     "peerDependencies": {
@@ -29,7 +27,8 @@
     "exports": {
         "./decorator": "./dist/decorator.js",
         ".": "./dist/decorator.js",
-        "./serialize": "./dist/serialize.js"
+        "./serialize": "./dist/serialize.js",
+        "./utils": "./dist/utils.js"
     },
     "types": "types/decorator.d.ts",
     "typesVersions": {
@@ -39,6 +38,9 @@
             ],
             "serialize": [
                 "./types/serialize.d.ts"
+            ],
+            "utils": [
+                "./types/utils.d.ts"
             ]
         }
     }

@@ -1,8 +1,10 @@
 import {
-  __commonJS,
-  __toESM,
   serialize
-} from "./chunk-QVWBF67X.js";
+} from "./chunk-URTQBJ2T.js";
+import {
+  __commonJS,
+  __toESM
+} from "./chunk-R3PFIBHC.js";
 
 // ../../node_modules/core-js/internals/global.js
 var require_global = __commonJS({
@@ -5068,6 +5070,7 @@ var decorator = (Story, context) => {
   if (typeof result === "string") {
     render(h("host", null, html.call(null, [result])), cache[context.id]);
   } else if (result instanceof Node) {
+    cache[context.id].innerHTML = "";
     cache[context.id].append(result);
   } else if (Array.isArray(result) || result.$$) {
     render(h("host", null, result), cache[context.id]);
