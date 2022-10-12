@@ -1,7 +1,6 @@
-import { DecoratorFunction } from "@storybook/csf";
-import { h, render, html } from "atomico";
-import { addons } from "@storybook/addons";
+import { addons, useEffect, DecoratorFunction } from "@storybook/addons";
 import { SNIPPET_RENDERED } from "@storybook/docs-tools";
+import { h, render, html } from "atomico";
 import { serialize } from "./serialize";
 
 const cache: {
@@ -9,16 +8,6 @@ const cache: {
 } = {};
 
 class Wrapper extends HTMLElement {
-    connectedCallback() {
-        requestIdleCallback(() => {
-            const channel = addons.getChannel();
-            channel.emit(
-                SNIPPET_RENDERED,
-                this.dataset.id,
-                serialize(this.childNodes)
-            );
-        });
-    }
     disconnectedCallback() {
         delete cache[this.dataset.id];
     }
@@ -27,6 +16,8 @@ class Wrapper extends HTMLElement {
 customElements.define("atomico-decorator-wrapper", Wrapper);
 
 export const decorator: DecoratorFunction = (Story, context) => {
+    let channel = addons.getChannel();
+
     if (!cache[context.id]) {
         cache[context.id] = document.createElement("atomico-decorator-wrapper");
         cache[context.id].setAttribute("data-id", context.id);
@@ -47,5 +38,16 @@ export const decorator: DecoratorFunction = (Story, context) => {
     } else if (result.render) {
         result.render(cache[context.id]);
     }
-    return cache[context.id];
+
+    let rendered = cache[context.id];
+
+    useEffect(() => {
+        channel.emit(
+            SNIPPET_RENDERED,
+            context.id,
+            serialize(rendered.childNodes)
+        );
+    });
+
+    return rendered;
 };
