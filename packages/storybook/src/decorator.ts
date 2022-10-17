@@ -15,7 +15,7 @@ class Wrapper extends HTMLElement {
 
 customElements.define("atomico-decorator-wrapper", Wrapper);
 
-export const decorator: DecoratorFunction = (Story, context) => {
+export const decorator: DecoratorFunction<any> = (Story, context) => {
     let channel = addons.getChannel();
 
     if (!cache[context.id]) {
