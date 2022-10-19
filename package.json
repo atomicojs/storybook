@@ -15,5 +15,6 @@
     "prettier": {
         "tabWidth": 4,
         "singleQuote": false
-    }
+    },
+    "version": "1.2.2"
 }
