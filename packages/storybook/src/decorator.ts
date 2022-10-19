@@ -18,6 +18,21 @@ customElements.define("atomico-decorator-wrapper", Wrapper);
 export const decorator: DecoratorFunction<any> = (Story, context) => {
     let channel = addons.getChannel();
 
+    if (context.argTypes) {
+        context.args = {
+            ...Object.entries(context.argTypes).reduce(
+                (args, [name, { defaultValue }]) => {
+                    if (defaultValue != null) {
+                        args[name] = defaultValue;
+                    }
+                    return args;
+                },
+                {}
+            ),
+            ...context.args,
+        };
+    }
+
     if (!cache[context.id]) {
         cache[context.id] = document.createElement("atomico-decorator-wrapper");
         cache[context.id].setAttribute("data-id", context.id);

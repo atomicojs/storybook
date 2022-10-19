@@ -23,7 +23,10 @@
         "atomico": "latest"
     },
     "devDependencies": {
+        "@atomico/lit-html": "^1.2.0",
         "@atomico/scaffold": "^0.2.0",
+        "@atomico/storybook": "*",
+        "@atomico/uhtml": "latest",
         "@babel/core": "^7.16.7",
         "@babel/plugin-transform-react-jsx": "^7.16.7",
         "@storybook/addon-essentials": "^6.5.0-alpha.14",
@@ -31,9 +34,6 @@
         "@storybook/builder-webpack5": "^6.5.0-alpha.14",
         "@storybook/html": "^6.5.0-alpha.14",
         "@storybook/manager-webpack5": "^6.5.0-alpha.14",
-        "babel-loader": "^8.2.3",
-        "@atomico/storybook": "*",
-        "@atomico/lit-html": "latest",
-        "@atomico/uhtml": "latest"
+        "babel-loader": "^8.2.3"
     }
 }

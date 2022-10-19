@@ -53,15 +53,19 @@ export function defineArgTypes(
         const control =
             autoControl?.control || agsTypes[type?.name || "default"];
 
+        const defaultValue =
+            typeof value === "function" && type !== Function
+                ? value()
+                : type === Boolean && !value
+                ? false
+                : value;
+
         argsTypes[prop] = {
             control,
             ...rewrite?.[prop],
-            ...(value != null
+            ...(defaultValue != null
                 ? {
-                      defaultValue:
-                          typeof value === "function" && type !== Function
-                              ? value()
-                              : value,
+                      defaultValue,
                   }
                 : {}),
         };

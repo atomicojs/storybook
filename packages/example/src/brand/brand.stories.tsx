@@ -15,10 +15,13 @@ export default {
 
 export const ExampleJSX = (props: any) => <Brand {...props}></Brand>;
 
+ExampleJSX.args = {
+    width: "120px",
+};
+
 export const ExampleHTML = (props) => html`<${Brand} ...${props}></${Brand}>`;
 
 ExampleHTML.args = {
-    color: "blueviolet",
     width: "280px",
 };
 
