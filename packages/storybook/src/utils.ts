@@ -29,8 +29,8 @@ export const agsTypes = {
 };
 
 export const argsTypesReg = [
-    { regExp: /color/, control: "color" },
-    { regExp: /date/, control: "date" },
+    { regExp: /color/i, control: "color" },
+    { regExp: /date/i, control: "date" },
 ];
 
 export function defineArgTypes(
