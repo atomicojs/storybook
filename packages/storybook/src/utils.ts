@@ -68,6 +68,7 @@ export function defineArgTypes(
                       defaultValue,
                   }
                 : {}),
+            atomicoType: type,
         };
     }
 
