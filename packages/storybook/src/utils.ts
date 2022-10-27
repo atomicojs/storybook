@@ -19,6 +19,10 @@ interface Input extends ArgType {
         | "date";
 }
 
+interface ArgTypes {
+    [index: string]: Input | false;
+}
+
 export const agsTypes = {
     [String.name]: "text",
     [Number.name]: "number",
@@ -35,9 +39,7 @@ export const argsTypesReg = [
 
 export function defineArgTypes(
     { props }: Atomico<any, any>,
-    rewrite?: {
-        [index: string]: Input | false;
-    }
+    rewrite?: ArgTypes
 ) {
     const argsTypes = {};
 
@@ -72,5 +74,10 @@ export function defineArgTypes(
         };
     }
 
-    return argsTypes;
+    return {
+        ...argsTypes,
+        ...defineArgTypes.global,
+    };
 }
+
+defineArgTypes.global = {} as ArgTypes;
