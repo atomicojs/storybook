@@ -74,10 +74,15 @@ export function defineArgTypes(
         };
     }
 
-    return {
-        ...argsTypes,
-        ...defineArgTypes.global,
-    };
+    for (let prop in defineArgTypes.global) {
+        if (!defineArgTypes.global[prop]) {
+            delete argsTypes[prop];
+        } else {
+            argsTypes[prop] = defineArgTypes.global[prop];
+        }
+    }
+
+    return argsTypes;
 }
 
 defineArgTypes.global = {} as ArgTypes;
