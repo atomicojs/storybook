@@ -23,19 +23,21 @@ interface ArgTypes {
     [index: string]: Input | false;
 }
 
-export const agsTypes = {
-    [String.name]: "text",
-    [Number.name]: "number",
-    [Boolean.name]: "boolean",
-    [Object.name]: "object",
-    [Array.name]: "object",
-    default: "text",
+export const options = {
+    global: {} as ArgTypes,
+    alias: {
+        [String.name]: "text",
+        [Number.name]: "number",
+        [Boolean.name]: "boolean",
+        [Object.name]: "object",
+        [Array.name]: "object",
+        default: "text",
+    },
+    match: [
+        { regExp: /color/i, control: "color" },
+        { regExp: /date/i, control: "date" },
+    ] as { regExp: RegExp; control: string; and?: any }[],
 };
-
-export const argsTypesReg = [
-    { regExp: /color/i, control: "color" },
-    { regExp: /date/i, control: "date" },
-];
 
 export function define(component: Atomico<any, any>, rewrite?: ArgTypes) {
     const story = {
@@ -50,12 +52,12 @@ export function define(component: Atomico<any, any>, rewrite?: ArgTypes) {
         const value = props[prop]?.value;
         if (rewrite?.[prop] === false) continue;
 
-        const autoControl = argsTypesReg.find(({ regExp }) =>
-            regExp.test(prop)
+        const autoControl = options.match.find(({ regExp, and }) =>
+            regExp.test(prop) ? (and ? type === and : true) : false
         );
 
         const control =
-            autoControl?.control || agsTypes[type?.name || "default"];
+            autoControl?.control || options.alias[type?.name || "default"];
 
         const defaultValue =
             typeof value === "function" && type !== Function
@@ -74,11 +76,11 @@ export function define(component: Atomico<any, any>, rewrite?: ArgTypes) {
         }
     }
 
-    for (let prop in define.global) {
-        if (!define.global[prop]) {
+    for (let prop in options.global) {
+        if (!options.global[prop]) {
             delete story.argsTypes[prop];
         } else {
-            story.argsTypes[prop] = define.global[prop];
+            story.argsTypes[prop] = options.global[prop];
         }
     }
 
@@ -92,5 +94,3 @@ export const defineArgTypes = (
 
 export const defineArgs = (component: Atomico<any, any>, rewrite?: ArgTypes) =>
     define(component, rewrite).args;
-
-define.global = {} as ArgTypes;
