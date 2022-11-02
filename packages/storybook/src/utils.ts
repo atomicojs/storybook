@@ -74,11 +74,11 @@ export function define(component: Atomico<any, any>, rewrite?: ArgTypes) {
         }
     }
 
-    for (let prop in defineArgTypes.global) {
-        if (!defineArgTypes.global[prop]) {
+    for (let prop in define.global) {
+        if (!define.global[prop]) {
             delete story.argsTypes[prop];
         } else {
-            story.argsTypes[prop] = defineArgTypes.global[prop];
+            story.argsTypes[prop] = define.global[prop];
         }
     }
 
@@ -93,4 +93,4 @@ export const defineArgTypes = (
 export const defineArgs = (component: Atomico<any, any>, rewrite?: ArgTypes) =>
     define(component, rewrite).args;
 
-defineArgTypes.global = {} as ArgTypes;
+define.global = {} as ArgTypes;
