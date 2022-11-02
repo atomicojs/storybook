@@ -37,11 +37,13 @@ export const argsTypesReg = [
     { regExp: /date/i, control: "date" },
 ];
 
-export function defineArgTypes(
-    { props }: Atomico<any, any>,
-    rewrite?: ArgTypes
-) {
-    const argsTypes = {};
+export function define(component: Atomico<any, any>, rewrite?: ArgTypes) {
+    const story = {
+        argsTypes: {},
+        args: {},
+    };
+
+    const { props } = component;
 
     for (let prop in props) {
         const type = props[prop]?.type || props[prop];
@@ -62,27 +64,33 @@ export function defineArgTypes(
                 ? false
                 : value;
 
-        argsTypes[prop] = {
+        story.argsTypes[prop] = {
             control,
             ...rewrite?.[prop],
-            ...(defaultValue != null
-                ? {
-                      defaultValue,
-                  }
-                : {}),
-            atomicoType: type,
         };
+
+        if (defaultValue != null) {
+            story.args[prop] = defaultValue;
+        }
     }
 
     for (let prop in defineArgTypes.global) {
         if (!defineArgTypes.global[prop]) {
-            delete argsTypes[prop];
+            delete story.argsTypes[prop];
         } else {
-            argsTypes[prop] = defineArgTypes.global[prop];
+            story.argsTypes[prop] = defineArgTypes.global[prop];
         }
     }
 
-    return argsTypes;
+    return story;
 }
+
+export const defineArgTypes = (
+    component: Atomico<any, any>,
+    rewrite?: ArgTypes
+) => define(component, rewrite).argsTypes;
+
+export const defineArgs = (component: Atomico<any, any>, rewrite?: ArgTypes) =>
+    define(component, rewrite).args;
 
 defineArgTypes.global = {} as ArgTypes;
