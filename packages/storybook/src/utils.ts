@@ -41,8 +41,12 @@ export const options = {
 
 export function define(component: Atomico<any, any>, rewrite?: ArgTypes) {
     const story = {
-        argTypes: {},
-        args: {},
+        argTypes: {} as {
+            [prop: string]: Input;
+        },
+        args: {} as {
+            [prop: string]: any;
+        },
     };
 
     const { props } = component;
@@ -50,14 +54,15 @@ export function define(component: Atomico<any, any>, rewrite?: ArgTypes) {
     for (let prop in props) {
         const type = props[prop]?.type || props[prop];
         const value = props[prop]?.value;
+
         if (rewrite?.[prop] === false) continue;
 
         const autoControl = options.match.find(({ regExp, and }) =>
             regExp.test(prop) ? (and ? type === and : true) : false
         );
 
-        const control =
-            autoControl?.control || options.alias[type?.name || "default"];
+        const control = (autoControl?.control ||
+            options.alias[type?.name || "default"]) as Input["control"];
 
         const defaultValue =
             typeof value === "function" && type !== Function
@@ -77,10 +82,13 @@ export function define(component: Atomico<any, any>, rewrite?: ArgTypes) {
     }
 
     for (let prop in options.global) {
-        if (!options.global[prop]) {
-            delete story.argTypes[prop];
+        /**
+         * @todo add 'is' operator
+         */
+        if (options.global[prop]) {
+            story.argTypes[prop] = options.global[prop] as Input;
         } else {
-            story.argTypes[prop] = options.global[prop];
+            delete story.argTypes[prop];
         }
     }
 
