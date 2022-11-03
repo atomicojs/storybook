@@ -1,7 +1,7 @@
 import { ArgType } from "@storybook/addons";
 import { Atomico } from "atomico/types/dom";
 
-interface Input extends ArgType {
+export interface Input extends ArgType {
     control?:
         | "boolean"
         | "number"
@@ -19,7 +19,7 @@ interface Input extends ArgType {
         | "date";
 }
 
-interface ArgTypes {
+export interface ArgTypes {
     [index: string]: Input | false;
 }
 
