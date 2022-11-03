@@ -53,6 +53,8 @@ brand.props = {
         type: Number,
         value: 100,
     },
+    backgroundColor: String,
+    date: String,
 };
 
 brand.styles = css`
