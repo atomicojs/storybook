@@ -41,7 +41,7 @@ export const options = {
 
 export function define(component: Atomico<any, any>, rewrite?: ArgTypes) {
     const story = {
-        argsTypes: {},
+        argTypes: {},
         args: {},
     };
 
@@ -66,7 +66,7 @@ export function define(component: Atomico<any, any>, rewrite?: ArgTypes) {
                 ? false
                 : value;
 
-        story.argsTypes[prop] = {
+        story.argTypes[prop] = {
             control,
             ...rewrite?.[prop],
         };
@@ -78,9 +78,9 @@ export function define(component: Atomico<any, any>, rewrite?: ArgTypes) {
 
     for (let prop in options.global) {
         if (!options.global[prop]) {
-            delete story.argsTypes[prop];
+            delete story.argTypes[prop];
         } else {
-            story.argsTypes[prop] = options.global[prop];
+            story.argTypes[prop] = options.global[prop];
         }
     }
 
@@ -90,7 +90,7 @@ export function define(component: Atomico<any, any>, rewrite?: ArgTypes) {
 export const defineArgTypes = (
     component: Atomico<any, any>,
     rewrite?: ArgTypes
-) => define(component, rewrite).argsTypes;
+) => define(component, rewrite).argTypes;
 
 export const defineArgs = (component: Atomico<any, any>, rewrite?: ArgTypes) =>
     define(component, rewrite).args;
