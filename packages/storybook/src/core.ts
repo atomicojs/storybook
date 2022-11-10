@@ -1,5 +1,7 @@
-import { ArgType } from "@storybook/addons";
+import { ArgType, BaseMeta, Parameters } from "@storybook/addons";
+import { Props } from "atomico";
 import { Atomico } from "atomico/types/dom";
+export * from "./decorator";
 
 export interface Input extends ArgType {
     control?:
@@ -39,13 +41,28 @@ export const options = {
     ] as { regExp: RegExp; control: string; and?: any }[],
 };
 
-export function define(component: Atomico<any, any>, rewrite?: ArgTypes) {
-    const story = {
-        argTypes: {} as {
-            [prop: string]: Input;
+export interface Config<Component extends Atomico<any, any>>
+    extends BaseMeta<Component> {
+    parameters?: Parameters;
+    argTypes?: Input;
+    args?: Props<Component>;
+}
+
+export function define<Component extends Atomico<any, any>>(
+    component: Component,
+    config?: Config<Component>
+) {
+    const story: Config<Component> = {
+        ...config,
+        argTypes: {
+            ...config?.argTypes,
         },
-        args: {} as {
-            [prop: string]: any;
+        args: {
+            ...config?.args,
+        },
+        parameters: {
+            actions: { argTypesRegex: "^on.*" },
+            ...config?.parameters,
         },
     };
 
@@ -55,7 +72,7 @@ export function define(component: Atomico<any, any>, rewrite?: ArgTypes) {
         const type = props[prop]?.type || props[prop];
         const value = props[prop]?.value;
 
-        if (rewrite?.[prop] === false) continue;
+        if (story?.argTypes?.[prop] === false) continue;
 
         const autoControl = options.match.find(({ regExp, and }) =>
             regExp.test(prop) ? (and ? type === and : true) : false
@@ -73,7 +90,7 @@ export function define(component: Atomico<any, any>, rewrite?: ArgTypes) {
 
         story.argTypes[prop] = {
             control,
-            ...rewrite?.[prop],
+            ...story?.argTypes?.[prop],
         };
 
         if (defaultValue != null) {

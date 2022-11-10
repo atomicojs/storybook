@@ -8,7 +8,7 @@
         "access": "public"
     },
     "scripts": {
-        "exports": "exports src/*.ts --types --exports --main decorator",
+        "exports": "exports src/*.ts --types --exports --main core",
         "prepublishOnly": "npm run exports"
     },
     "keywords": [],
@@ -23,24 +23,24 @@
         "atomico": "*",
         "@storybook/addons": "*"
     },
-    "module": "./dist/decorator.js",
+    "module": "./dist/core.js",
     "exports": {
+        "./core": "./dist/core.js",
+        ".": "./dist/core.js",
         "./decorator": "./dist/decorator.js",
-        ".": "./dist/decorator.js",
-        "./serialize": "./dist/serialize.js",
-        "./utils": "./dist/utils.js"
+        "./serialize": "./dist/serialize.js"
     },
-    "types": "types/decorator.d.ts",
+    "types": "types/core.d.ts",
     "typesVersions": {
         "*": {
+            "core": [
+                "./types/core.d.ts"
+            ],
             "decorator": [
                 "./types/decorator.d.ts"
             ],
             "serialize": [
                 "./types/serialize.d.ts"
-            ],
-            "utils": [
-                "./types/utils.d.ts"
             ]
         }
     }

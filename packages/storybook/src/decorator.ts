@@ -13,7 +13,8 @@ class Wrapper extends HTMLElement {
     }
 }
 
-customElements.define("atomico-decorator-wrapper", Wrapper);
+if (!customElements.get("atomico-decorator-wrapper"))
+    customElements.define("atomico-decorator-wrapper", Wrapper);
 
 export const decorator: DecoratorFunction<any> = (Story, context) => {
     let channel = addons.getChannel();
