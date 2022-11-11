@@ -24,8 +24,8 @@ export interface Config<Component extends Atomico<any, any>> {
     id?: string;
     argTypes?: ArgTypes;
     args?: Props<Component>;
-    component?: Component;
-    subcomponents?: Record<string, Component>;
+    component?: string;
+    subcomponents?: Record<string, string>;
     [index: string]: any;
 }
 
@@ -45,7 +45,6 @@ export function define<Component extends Atomico<any, any>>(
             actions: { argTypesRegex: "^on.*" },
             ...config?.parameters,
         },
-        component,
     };
 
     const { props } = component;
