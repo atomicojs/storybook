@@ -1,29 +1,7 @@
-import { ArgType, BaseMeta, Parameters } from "@storybook/addons";
 import { Props } from "atomico";
 import { Atomico } from "atomico/types/dom";
+import { ArgTypes, Input, Controls } from "./types";
 export * from "./decorator";
-
-export interface Input extends ArgType {
-    control?:
-        | "boolean"
-        | "number"
-        | "range"
-        | "object"
-        | "file"
-        | "radio"
-        | "inline-radio"
-        | "check"
-        | "inline-check"
-        | "select"
-        | "multi-select"
-        | "text"
-        | "color"
-        | "date";
-}
-
-export interface ArgTypes {
-    [index: string]: Input | false;
-}
 
 export const options = {
     global: {} as ArgTypes,
@@ -38,14 +16,17 @@ export const options = {
     match: [
         { regExp: /color/i, control: "color" },
         { regExp: /date/i, control: "date" },
-    ] as { regExp: RegExp; control: string; and?: any }[],
+    ] as { regExp: RegExp; control: Controls; and?: any }[],
 };
 
-export interface Config<Component extends Atomico<any, any>>
-    extends BaseMeta<Component> {
-    parameters?: Parameters;
-    argTypes?: Input;
+export interface Config<Component extends Atomico<any, any>> {
+    title?: string;
+    id?: string;
+    argTypes?: ArgTypes;
     args?: Props<Component>;
+    component?: Component;
+    subcomponents?: Record<string, Component>;
+    [index: string]: any;
 }
 
 export function define<Component extends Atomico<any, any>>(
@@ -64,6 +45,7 @@ export function define<Component extends Atomico<any, any>>(
             actions: { argTypesRegex: "^on.*" },
             ...config?.parameters,
         },
+        component,
     };
 
     const { props } = component;
@@ -78,8 +60,9 @@ export function define<Component extends Atomico<any, any>>(
             regExp.test(prop) ? (and ? type === and : true) : false
         );
 
-        const control = (autoControl?.control ||
-            options.alias[type?.name || "default"]) as Input["control"];
+        const control =
+            autoControl?.control ||
+            (options.alias[type?.name || "default"] as any);
 
         const defaultValue =
             typeof value === "function" && type !== Function
@@ -114,8 +97,8 @@ export function define<Component extends Atomico<any, any>>(
 
 export const defineArgTypes = (
     component: Atomico<any, any>,
-    rewrite?: ArgTypes
-) => define(component, rewrite).argTypes;
+    argTypes?: ArgTypes
+) => define(component, { argTypes }).argTypes;
 
-export const defineArgs = (component: Atomico<any, any>, rewrite?: ArgTypes) =>
-    define(component, rewrite).args;
+export const defineArgs = (component: Atomico<any, any>, argTypes?: ArgTypes) =>
+    define(component, { argTypes }).args;
