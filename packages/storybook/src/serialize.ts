@@ -1,4 +1,10 @@
-export const serialize = (children: NodeList, tab = 0) =>
+const AtomicoID = Symbol.for("Atomico.ID");
+
+export const serialize = (
+    children: NodeList,
+    tab = 0,
+    currentId: symbol | string
+) =>
     [...children].reduce((html, child) => {
         let space = tab ? "   ".repeat(tab) : "";
 
@@ -8,42 +14,45 @@ export const serialize = (children: NodeList, tab = 0) =>
                 _props?: { [prop: string]: any };
             };
 
-            if (localName.includes("-")) {
-                const props = (
-                    _props
-                        ? Object.entries(_props)
-                        : Object.values(attributes).map((attr) => [
-                              attr.name,
-                              attr.value,
-                          ])
-                ) as [string, string][];
+            //@ts-ignore
+            currentId = child.symbolId || currentId;
 
-                const attrs = props.reduce<string[]>((attrs, [prop, value]) => {
-                    if (value != null) {
-                        let type = typeof value;
-                        let attr =
-                            type === "boolean"
-                                ? value
-                                    ? prop
-                                    : ""
-                                : type === "function"
-                                ? `${prop}=${type}`
-                                : `${prop}=${JSON.stringify(value)}`;
-                        attr && attrs.push(attr);
-                    }
-                    return attrs;
-                }, []);
+            if (!child[currentId] && !child[AtomicoID]) return html;
 
-                let content = serialize(childNodes, tab + 1);
+            const props = (
+                _props
+                    ? Object.entries(_props)
+                    : Object.values(attributes).map((attr) => [
+                          attr.name,
+                          attr.value,
+                      ])
+            ) as [string, string][];
 
-                if (content) {
-                    content += `\n${space}`;
+            const attrs = props.reduce<string[]>((attrs, [prop, value]) => {
+                if (value != null) {
+                    let type = typeof value;
+                    let attr =
+                        type === "boolean"
+                            ? value
+                                ? prop
+                                : ""
+                            : type === "function"
+                            ? `${prop}=${type}`
+                            : `${prop}=${JSON.stringify(value)}`;
+                    attr && attrs.push(attr);
                 }
+                return attrs;
+            }, []);
 
-                html += `${space ? `\n${space}` : ""}<${localName}${
-                    attrs.length ? ` ${attrs.join(" ")}` : ""
-                }>${content}</${localName}>`;
+            let content = serialize(childNodes, tab + 1, currentId);
+
+            if (content) {
+                content += `\n${space}`;
             }
+
+            html += `${space ? `\n${space}` : ""}<${localName}${
+                attrs.length ? ` ${attrs.join(" ")}` : ""
+            }>${content}</${localName}>`;
         } else if (child.textContent.trim()) {
             html += `\n${space}${child.textContent}`;
         }

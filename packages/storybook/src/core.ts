@@ -50,7 +50,9 @@ export function define<Component extends Atomico<any, any>>(
     const { props } = component;
 
     for (let prop in props) {
+        //@ts-ignore
         const type = props[prop]?.type || props[prop];
+        //@ts-ignore
         const value = props[prop]?.value;
 
         if (story?.argTypes?.[prop] === false) continue;
