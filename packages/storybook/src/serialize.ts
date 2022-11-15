@@ -3,7 +3,7 @@ const AtomicoID = Symbol.for("Atomico.ID");
 export const serialize = (
     children: NodeList,
     tab = 0,
-    currentId: symbol | string
+    currentId?: symbol | string
 ) =>
     [...children].reduce((html, child) => {
         let space = tab ? "   ".repeat(tab) : "";
