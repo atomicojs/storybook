@@ -1,6 +1,6 @@
 import { Props } from "atomico";
 import { Atomico } from "atomico/types/dom";
-import { ArgTypes, Input, Controls } from "./types";
+import { ArgTypes, Input, Controls, Table } from "./types";
 export * from "./decorator";
 
 export const options = {
@@ -72,9 +72,25 @@ export function define<Component extends Atomico<any, any>>(
                 ? false
                 : value;
 
+        const argType = story?.argTypes?.[prop] as Input;
+
+        const table: Table = {
+            ...argType?.table,
+            type: {
+                summary: type.name,
+                detail: argType?.description,
+                ...argType?.table?.type,
+            },
+            defaultValue: {
+                summary: defaultValue,
+                ...argType?.table?.defaultValue,
+            },
+        };
+
         story.argTypes[prop] = {
             control,
             ...story?.argTypes?.[prop],
+            table,
         };
 
         if (defaultValue != null) {

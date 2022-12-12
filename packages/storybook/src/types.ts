@@ -118,11 +118,21 @@ export type Types =
     | TypeUnion
     | TypeOther;
 
+export interface Table {
+    type?: {
+        summary?: string;
+        detail?: string;
+    };
+    defaultValue?: { summary?: string; detail?: string };
+    category?: string;
+}
+
 export type InputBase<Control> = {
     name?: string;
     description?: string;
     type?: Types | Type;
     if?: Conditional;
+    table?: Table;
 } & Control;
 
 export type Input = InputBase<Controls>;
