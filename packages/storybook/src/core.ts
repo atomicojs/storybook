@@ -72,12 +72,16 @@ export function define<Component extends Atomico<any, any>>(
                 ? false
                 : value;
 
-        const argType = story?.argTypes?.[prop] as Input;
+        const argType = (story?.argTypes?.[prop] || {}) as Input;
+
+        const { category } = argType;
+        let { type: typeForTable = type.name } = argType as any;
 
         const table: Table = {
+            category,
             ...argType?.table,
             type: {
-                summary: type.name,
+                summary: typeForTable,
                 detail: argType?.description,
                 ...argType?.table?.type,
             },
@@ -89,7 +93,7 @@ export function define<Component extends Atomico<any, any>>(
 
         story.argTypes[prop] = {
             control,
-            ...story?.argTypes?.[prop],
+            ...argType,
             table,
         };
 
@@ -98,7 +102,7 @@ export function define<Component extends Atomico<any, any>>(
         }
     }
 
-    for (let prop in options.global) {
+    for (const prop in options.global) {
         /**
          * @todo add 'is' operator
          */
@@ -106,6 +110,51 @@ export function define<Component extends Atomico<any, any>>(
             story.argTypes[prop] = options.global[prop] as Input;
         } else {
             delete story.argTypes[prop];
+        }
+    }
+
+    for (const prop in story.argTypes) {
+        if (prop in props || !story.argTypes?.[prop]) continue;
+
+        const argType = story.argTypes?.[prop] as Input;
+
+        if (argType.action) {
+            const test = prop.match(/on(.+)/);
+            if (!test) continue;
+            const [, event] = test;
+            const { category = "Events" } = argType;
+            const table: Table = {
+                category,
+                ...argType?.table,
+                type: {
+                    summary: event,
+                    detail: argType?.description,
+                    ...argType?.table?.type,
+                },
+            };
+            story.argTypes[prop] = {
+                ...story.argTypes[prop],
+                table,
+            };
+        } else {
+            const { category } = argType;
+            const table: Table = {
+                category,
+                ...argType?.table,
+                type: {
+                    summary:
+                        argType?.table?.type?.summary ||
+                        category.toLowerCase() === "slots"
+                            ? "Element"
+                            : "",
+                    detail: argType?.description,
+                    ...argType?.table?.type,
+                },
+            };
+            story.argTypes[prop] = {
+                ...story.argTypes[prop],
+                table,
+            };
         }
     }
 

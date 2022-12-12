@@ -50,8 +50,8 @@ brand.props = {
     },
     checked: Boolean,
     size: {
-        type: Number,
-        value: 100,
+        type: String,
+        value: "small",
     },
     backgroundColor: String,
     date: String,

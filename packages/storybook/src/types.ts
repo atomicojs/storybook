@@ -133,6 +133,8 @@ export type InputBase<Control> = {
     type?: Types | Type;
     if?: Conditional;
     table?: Table;
+    category?: string;
+    action?: string;
 } & Control;
 
 export type Input = InputBase<Controls>;
