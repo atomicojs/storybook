@@ -75,7 +75,7 @@ export function define<Component extends Atomico<any, any>>(
         const argType = (story?.argTypes?.[prop] || {}) as Input;
 
         const { category } = argType;
-        let { type: typeForTable = type.name } = argType as any;
+        let { type: typeForTable = type?.name || "Any" } = argType as any;
 
         const table: Table = {
             category,
