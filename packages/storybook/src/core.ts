@@ -144,7 +144,7 @@ export function define<Component extends Atomico<any, any>>(
                 type: {
                     summary:
                         argType?.table?.type?.summary ||
-                        category.toLowerCase() === "slots"
+                        category?.toLowerCase() === "slots"
                             ? "Element"
                             : "",
                     detail: argType?.description,
