@@ -50,7 +50,7 @@ export function define<Component extends Atomico<any, any>>(
     const { props } = component;
 
     for (const prop in options.global) {
-        if (!options.global[prop]) continue;
+        if (!options.global[prop] || !(prop in props)) continue;
 
         const { description, category, ...config } = options.global[
             prop
