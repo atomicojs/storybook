@@ -49,6 +49,27 @@ export function define<Component extends Atomico<any, any>>(
 
     const { props } = component;
 
+    for (const prop in options.global) {
+        if (!options.global[prop]) continue;
+
+        const { description, category, ...config } = options.global[
+            prop
+        ] as Input;
+
+        const table: Table = {
+            category,
+            ...config.table,
+            type: {
+                ...config?.table?.type,
+            },
+            defaultValue: {
+                ...config?.table?.defaultValue,
+            },
+        };
+
+        story.argTypes[prop] = { ...config, table, description };
+    }
+
     for (let prop in props) {
         //@ts-ignore
         const type = props[prop]?.type || props[prop];
@@ -82,7 +103,6 @@ export function define<Component extends Atomico<any, any>>(
             ...argType?.table,
             type: {
                 summary: typeForTable,
-                detail: argType?.description,
                 ...argType?.table?.type,
             },
             defaultValue: {
@@ -103,12 +123,7 @@ export function define<Component extends Atomico<any, any>>(
     }
 
     for (const prop in options.global) {
-        /**
-         * @todo add 'is' operator
-         */
-        if (options.global[prop]) {
-            story.argTypes[prop] = options.global[prop] as Input;
-        } else {
+        if (!options.global[prop]) {
             delete story.argTypes[prop];
         }
     }
@@ -128,7 +143,6 @@ export function define<Component extends Atomico<any, any>>(
                 ...argType?.table,
                 type: {
                     summary: event,
-                    detail: argType?.description,
                     ...argType?.table?.type,
                 },
             };
@@ -147,7 +161,6 @@ export function define<Component extends Atomico<any, any>>(
                         category?.toLowerCase() === "slots"
                             ? "Element"
                             : "",
-                    detail: argType?.description,
                     ...argType?.table?.type,
                 },
             };
