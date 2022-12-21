@@ -52,22 +52,30 @@ export function define<Component extends Atomico<any, any>>(
     for (const prop in options.global) {
         if (!options.global[prop] || !(prop in props)) continue;
 
-        const { description, category, ...config } = options.global[
+        const currentConfig = config?.argTypes?.[prop] as Input;
+        const { description, category, ...globalConfig } = options.global[
             prop
         ] as Input;
 
         const table: Table = {
-            category,
-            ...config.table,
+            category: currentConfig?.category || category,
+            ...globalConfig.table,
             type: {
-                ...config?.table?.type,
+                ...globalConfig?.table?.type,
+                ...currentConfig?.table?.type,
             },
             defaultValue: {
-                ...config?.table?.defaultValue,
+                ...globalConfig?.table?.defaultValue,
+                ...currentConfig?.table?.defaultValue,
             },
         };
 
-        story.argTypes[prop] = { ...config, table, description };
+        story.argTypes[prop] = {
+            ...globalConfig,
+            ...(config?.argTypes?.[prop] || {}),
+            table,
+            description: currentConfig?.description || description,
+        };
     }
 
     for (let prop in props) {
@@ -123,7 +131,7 @@ export function define<Component extends Atomico<any, any>>(
     }
 
     for (const prop in options.global) {
-        if (!options.global[prop]) {
+        if (!options.global[prop] && !config?.argTypes?.[prop]) {
             delete story.argTypes[prop];
         }
     }
