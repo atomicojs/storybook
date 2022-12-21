@@ -86,7 +86,7 @@ export function define<Component extends Atomico<any, any>>(
             return { ...types, [prop]: { control, defaultValue, type } };
         }, {});
 
-    story.argTypes = [options.global, config.argTypes].reduce(
+    story.argTypes = [options.global, config?.argTypes].reduce(
         (argTypes, schema) => {
             if (!schema) return argTypes;
             return Object.entries(schema).reduce((argTypes, [prop, value]) => {
@@ -94,7 +94,7 @@ export function define<Component extends Atomico<any, any>>(
                     delete argTypes[prop];
                 } else {
                     const argType = argTypes[prop] as Input;
-                    const event = prop.match(/on(.+)/);
+                    const event = /on(.+)/.test(prop) && !types[prop];
 
                     const automaticCategory = event
                         ? "Events"
