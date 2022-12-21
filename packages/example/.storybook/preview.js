@@ -1,5 +1,13 @@
 import "./disable-hmr";
-import { decorator } from "@atomico/storybook";
+import { decorator, options } from "@atomico/storybook";
+
+options.markdown = true;
+
+options.global = {
+    color: {
+        category: "Appearance",
+    },
+};
 
 export const parameters = {
     actions: { argTypesRegex: "^on[A-Z].*" },

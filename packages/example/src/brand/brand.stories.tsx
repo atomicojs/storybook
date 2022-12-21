@@ -7,8 +7,7 @@ export default define(Brand, {
     title: "components/brand",
     argTypes: {
         color: {
-            description: "Defines the color of the component",
-            category: "Generic",
+            description: `### Defines the color of the component`,
         },
         onclick: {
             description: "dispatch...",
@@ -17,10 +16,14 @@ export default define(Brand, {
         header: {
             category: "Slots",
             description: "My header slot",
+            defaultValue: "HTMLElement",
         },
         size: {
             control: "radio",
             options: ["small", "large", "big"],
+        },
+        "--color": {
+            description: "Color",
         },
     },
 });

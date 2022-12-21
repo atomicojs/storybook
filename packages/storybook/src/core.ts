@@ -1,10 +1,12 @@
 import { Props } from "atomico";
 import { Atomico } from "atomico/types/dom";
-import { ArgTypes, Input, Controls, Table } from "./types";
+import snarkdown from "snarkdown";
+import { ArgTypes, Input, Controls, Table, Types } from "./types";
 export * from "./decorator";
 
 export const options = {
     global: {} as ArgTypes,
+    markdown: false,
     alias: {
         [String.name]: "text",
         [Number.name]: "number",
@@ -35,9 +37,7 @@ export function define<Component extends Atomico<any, any>>(
 ) {
     const story: Config<Component> = {
         ...config,
-        argTypes: {
-            ...config?.argTypes,
-        },
+        argTypes: {},
         args: {
             ...config?.args,
         },
@@ -49,135 +49,124 @@ export function define<Component extends Atomico<any, any>>(
 
     const { props } = component;
 
-    for (const prop in options.global) {
-        if (!options.global[prop] || !(prop in props)) continue;
+    const types = Object.entries(props)
+        .map(
+            ([prop, schema]) =>
+                [
+                    prop,
+                    typeof schema === "object" && schema != null
+                        ? schema
+                        : { type: schema },
+                ] as [string, { type: any; value?: any }]
+        )
+        .reduce<{
+            [prop: string]: {
+                control: any;
+                defaultValue: any;
+                type: Types;
+            };
+        }>((types, [prop, schema]) => {
+            const { type, value } = schema;
 
-        const currentConfig = config?.argTypes?.[prop] as Input;
-        const { description, category, ...globalConfig } = options.global[
-            prop
-        ] as Input;
+            const autoControl = options.match.find(({ regExp, and }) =>
+                regExp.test(prop) ? (and ? type === and : true) : false
+            );
 
-        const table: Table = {
-            category: currentConfig?.category || category,
-            ...globalConfig.table,
-            type: {
-                ...globalConfig?.table?.type,
-                ...currentConfig?.table?.type,
-            },
-            defaultValue: {
-                ...globalConfig?.table?.defaultValue,
-                ...currentConfig?.table?.defaultValue,
-            },
-        };
+            const control =
+                autoControl?.control ||
+                (options.alias[type?.name || "default"] as any);
 
-        story.argTypes[prop] = {
-            ...globalConfig,
-            ...(config?.argTypes?.[prop] || {}),
-            table,
-            description: currentConfig?.description || description,
-        };
-    }
+            const defaultValue =
+                typeof value === "function" && type !== Function
+                    ? value()
+                    : type === Boolean && !value
+                    ? false
+                    : value;
 
-    for (let prop in props) {
-        //@ts-ignore
-        const type = props[prop]?.type || props[prop];
-        //@ts-ignore
-        const value = props[prop]?.value;
+            return { ...types, [prop]: { control, defaultValue, type } };
+        }, {});
 
-        if (story?.argTypes?.[prop] === false) continue;
+    story.argTypes = [options.global, config.argTypes].reduce(
+        (argTypes, schema) => {
+            if (!schema) return argTypes;
+            return Object.entries(schema).reduce((argTypes, [prop, value]) => {
+                if (value === false) {
+                    delete argTypes[prop];
+                } else {
+                    const argType = argTypes[prop] as Input;
+                    const event = prop.match(/on(.+)/);
 
-        const autoControl = options.match.find(({ regExp, and }) =>
-            regExp.test(prop) ? (and ? type === and : true) : false
-        );
+                    const automaticCategory = event
+                        ? "Events"
+                        : prop.startsWith("--")
+                        ? `CSS custom properties`
+                        : undefined;
 
-        const control =
-            autoControl?.control ||
-            (options.alias[type?.name || "default"] as any);
+                    const {
+                        category = argType?.table?.category ||
+                            automaticCategory,
+                        defaultValue = argType?.table?.defaultValue?.summary,
+                        ...config
+                    } = value;
 
-        const defaultValue =
-            typeof value === "function" && type !== Function
-                ? value()
-                : type === Boolean && !value
-                ? false
-                : value;
+                    let { description = argType?.description } = value;
 
-        const argType = (story?.argTypes?.[prop] || {}) as Input;
+                    const table: Table = {
+                        category,
+                        type: {
+                            ...argType?.table?.type,
+                            ...config?.table?.type,
+                        },
+                        defaultValue: {
+                            summary: defaultValue,
+                            ...argType?.table?.defaultValue,
+                            ...config?.table?.defaultValue,
+                        },
+                    };
 
-        const { category } = argType;
-        let { type: typeForTable = type?.name || "Any" } = argType as any;
+                    if (options.markdown && typeof description === "string") {
+                        description = snarkdown(description);
+                    }
 
-        const table: Table = {
-            category,
-            ...argType?.table,
-            type: {
-                summary: typeForTable,
-                ...argType?.table?.type,
-            },
-            defaultValue: {
-                summary: defaultValue,
-                ...argType?.table?.defaultValue,
-            },
-        };
+                    return {
+                        ...argTypes,
+                        [prop]: {
+                            ...argType,
+                            ...config,
+                            description,
+                            table,
+                        },
+                    };
+                }
+                return argTypes;
+            }, argTypes);
+        },
+        story.argTypes
+    );
 
-        story.argTypes[prop] = {
-            control,
-            ...argType,
-            table,
-        };
-
-        if (defaultValue != null) {
-            story.args[prop] = defaultValue;
-        }
-    }
-
-    for (const prop in options.global) {
-        if (!options.global[prop] && !config?.argTypes?.[prop]) {
-            delete story.argTypes[prop];
-        }
-    }
-
-    for (const prop in story.argTypes) {
-        if (prop in props || !story.argTypes?.[prop]) continue;
-
+    Object.entries(types).forEach(([prop, { control, defaultValue, type }]) => {
+        if (!story.argTypes?.[prop]) return;
         const argType = story.argTypes?.[prop] as Input;
-
-        if (argType.action) {
-            const test = prop.match(/on(.+)/);
-            if (!test) continue;
-            const [, event] = test;
-            const { category = "Events" } = argType;
-            const table: Table = {
-                category,
+        story.argTypes[prop] = {
+            ...story.argTypes[prop],
+            control: argType?.control || control,
+            type: argType?.type || type,
+            table: {
                 ...argType?.table,
                 type: {
-                    summary: event,
                     ...argType?.table?.type,
+                    summary: type?.name || "Any",
                 },
-            };
-            story.argTypes[prop] = {
-                ...story.argTypes[prop],
-                table,
-            };
-        } else {
-            const { category } = argType;
-            const table: Table = {
-                category,
-                ...argType?.table,
-                type: {
+                defaultValue: {
+                    ...argType?.table?.defaultValue,
                     summary:
-                        argType?.table?.type?.summary ||
-                        category?.toLowerCase() === "slots"
-                            ? "Element"
-                            : "",
-                    ...argType?.table?.type,
+                        argType?.table?.defaultValue?.summary || defaultValue,
                 },
-            };
-            story.argTypes[prop] = {
-                ...story.argTypes[prop],
-                table,
-            };
-        }
-    }
+            },
+        };
+        story.args[prop] =
+            prop in (story.args as any) ? story.args[prop] : defaultValue;
+    });
 
     return story;
 }

@@ -135,6 +135,7 @@ export type InputBase<Control> = {
     table?: Table;
     category?: string;
     action?: string;
+    defaultValue?: any;
 } & Control;
 
 export type Input = InputBase<Controls>;
