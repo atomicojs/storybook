@@ -16,6 +16,11 @@ export interface Config<Component extends Atomico<any, any>> {
     [index: string]: any;
 }
 
+const getAutoControl = (prop: string, type?: any) =>
+    options.match.find(({ regExp, and }) =>
+        regExp.test(prop) ? (and ? type === and : true) : false
+    );
+
 export function define<Component extends Atomico<any, any>>(
     component: Component,
     config?: Config<Component>
@@ -53,9 +58,7 @@ export function define<Component extends Atomico<any, any>>(
         }>((types, [prop, schema]) => {
             const { type, value } = schema;
 
-            const autoControl = options.match.find(({ regExp, and }) =>
-                regExp.test(prop) ? (and ? type === and : true) : false
-            );
+            const autoControl = getAutoControl(prop, type);
 
             const control =
                 autoControl?.control ||
@@ -96,6 +99,9 @@ export function define<Component extends Atomico<any, any>>(
 
                     let { description = argType?.description } = value;
 
+                    let { control = getAutoControl(prop)?.control } =
+                        argType || {};
+
                     const table: Table = {
                         category,
                         type: {
@@ -119,6 +125,7 @@ export function define<Component extends Atomico<any, any>>(
                             ...argType,
                             ...config,
                             description,
+                            control: control as any,
                             table,
                         },
                     };
