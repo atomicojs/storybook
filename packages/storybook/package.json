@@ -1,6 +1,6 @@
 {
     "name": "@atomico/storybook",
-    "version": "1.8.1",
+    "version": "1.9.0",
     "public": true,
     "description": "Render Atomico's virtualDOM in Storybook",
     "type": "module",

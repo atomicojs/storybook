@@ -1,3 +1,5 @@
+import { options } from "./options";
+
 const AtomicoID = Symbol.for("Atomico.ID");
 
 export const serialize = (
@@ -10,6 +12,7 @@ export const serialize = (
 
         if (child instanceof Element) {
             const { localName, childNodes, attributes } = child;
+            const ignore = options.ignore[localName] || [];
             const { _props = {} } = child as Element & {
                 _props?: { [prop: string]: any };
             };
@@ -28,23 +31,27 @@ export const serialize = (
                       ])
             ) as [string, string][];
 
-            const attrs = props.reduce<string[]>((attrs, [prop, value]) => {
-                if (value != null) {
-                    let type = typeof value;
-                    let attr =
-                        type === "boolean"
-                            ? value
-                                ? prop
-                                : ""
-                            : type === "function"
-                            ? `${prop}=${type}`
-                            : `${prop}=${JSON.stringify(value)}`;
-                    attr && attrs.push(attr);
-                }
-                return attrs;
-            }, []);
+            const attrs = props
+                .filter(([prop]) => !ignore.includes(prop))
+                .reduce<string[]>((attrs, [prop, value]) => {
+                    if (value != null) {
+                        let type = typeof value;
+                        let attr =
+                            type === "boolean"
+                                ? value
+                                    ? prop
+                                    : ""
+                                : type === "function"
+                                ? `${prop}=${type}`
+                                : `${prop}=${JSON.stringify(value)}`;
+                        attr && attrs.push(attr);
+                    }
+                    return attrs;
+                }, []);
 
-            let content = serialize(childNodes, tab + 1, currentId);
+            let content =
+                !ignore.includes("children") &&
+                serialize(childNodes, tab + 1, currentId);
 
             if (content) {
                 content += `\n${space}`;

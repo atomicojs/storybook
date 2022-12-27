@@ -1,25 +1,10 @@
 import { Props } from "atomico";
 import { Atomico } from "atomico/types/dom";
 import snarkdown from "snarkdown";
-import { ArgTypes, Input, Controls, Table, Types } from "./types";
+import { ArgTypes, Input, Table, Types } from "./types";
+import { options } from "./options";
+export { options } from "./options";
 export * from "./decorator";
-
-export const options = {
-    global: {} as ArgTypes,
-    markdown: false,
-    alias: {
-        [String.name]: "text",
-        [Number.name]: "number",
-        [Boolean.name]: "boolean",
-        [Object.name]: "object",
-        [Array.name]: "object",
-        default: "text",
-    },
-    match: [
-        { regExp: /color/i, control: "color" },
-        { regExp: /date/i, control: "date" },
-    ] as { regExp: RegExp; control: Controls; and?: any }[],
-};
 
 export interface Config<Component extends Atomico<any, any>> {
     title?: string;
