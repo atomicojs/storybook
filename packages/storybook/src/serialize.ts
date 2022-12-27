@@ -13,6 +13,9 @@ export const serialize = (
         if (child instanceof Element) {
             const { localName, childNodes, attributes } = child;
             const ignore = options.ignore[localName] || [];
+
+            if (options.ignore["*"]) ignore.push(...options.ignore["*"]);
+
             const { _props = {} } = child as Element & {
                 _props?: { [prop: string]: any };
             };
@@ -49,9 +52,9 @@ export const serialize = (
                     return attrs;
                 }, []);
 
-            let content =
-                !ignore.includes("children") &&
-                serialize(childNodes, tab + 1, currentId);
+            let content = ignore.includes("children")
+                ? ""
+                : serialize(childNodes, tab + 1, currentId);
 
             if (content) {
                 content += `\n${space}`;
