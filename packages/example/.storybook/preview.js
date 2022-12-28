@@ -2,6 +2,7 @@ import "./disable-hmr";
 import { decorator, options } from "@atomico/storybook";
 
 options.ignore = {
+    "*": ["focused"],
     "atomico-brand": ["children"],
 };
 

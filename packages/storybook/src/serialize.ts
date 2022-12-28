@@ -2,6 +2,12 @@ import { options } from "./options";
 
 const AtomicoID = Symbol.for("Atomico.ID");
 
+/**
+ * Transform a Camel Case string to a Kebab case
+ */
+export const getAttr = (prop: string) =>
+    prop.replace(/([A-Z])/g, "-$1").toLowerCase();
+
 export const serialize = (
     children: NodeList,
     tab = 0,
@@ -12,7 +18,7 @@ export const serialize = (
 
         if (child instanceof Element) {
             const { localName, childNodes, attributes } = child;
-            const ignore = options.ignore[localName] || [];
+            const ignore = [...(options.ignore[localName] || [])];
 
             if (options.ignore["*"]) ignore.push(...options.ignore["*"]);
 
@@ -27,7 +33,10 @@ export const serialize = (
 
             const props = (
                 _props
-                    ? Object.entries(_props)
+                    ? Object.entries(_props).map(([prop, value]) => [
+                          value?.attr || getAttr(prop),
+                          value,
+                      ])
                     : Object.values(attributes).map((attr) => [
                           attr.name,
                           attr.value,

@@ -51,26 +51,3 @@ ExampleRaw.args = {
     color: "gold",
     width: "280px",
 };
-
-export const ExampleDOM = (props) => Object.assign(new Brand(), props);
-
-ExampleDOM.args = {
-    color: "teal",
-    width: "280px",
-};
-
-export const ExampleLitHtml = (props) =>
-    litHTML`<atomico-brand
-        color=${props.color}
-        width=${props.width}
-    ></atomico-brand>`;
-
-ExampleDOM.args = {
-    color: "teal",
-    width: "280px",
-};
-
-ExampleDOM.args = {
-    color: "teal",
-    width: "280px",
-};

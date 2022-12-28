@@ -54,8 +54,9 @@ brand.props = {
         type: String,
         value: "small",
     },
-    backgroundColor: String,
+    backgroundColor: { type: String, reflect: true, value: "black" },
     date: String,
+    focused: { type: Boolean, reflect: true, value: true },
 };
 
 brand.styles = css`
