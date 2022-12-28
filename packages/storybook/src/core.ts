@@ -99,8 +99,10 @@ export function define<Component extends Atomico<any, any>>(
 
                     let { description = argType?.description } = value;
 
-                    let { control = getAutoControl(prop)?.control } =
-                        argType || {};
+                    let {
+                        control = argType?.control ||
+                            getAutoControl(prop)?.control,
+                    } = value || {};
 
                     const table: Table = {
                         category,

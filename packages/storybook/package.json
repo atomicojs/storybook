@@ -31,7 +31,8 @@
         ".": "./dist/core.js",
         "./decorator": "./dist/decorator.js",
         "./serialize": "./dist/serialize.js",
-        "./types": "./dist/types.js"
+        "./types": "./dist/types.js",
+        "./options": "./dist/options.js"
     },
     "types": "types/core.d.ts",
     "typesVersions": {
@@ -47,6 +48,9 @@
             ],
             "types": [
                 "./types/types.d.ts"
+            ],
+            "options": [
+                "./types/options.d.ts"
             ]
         }
     }

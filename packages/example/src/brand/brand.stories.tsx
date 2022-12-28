@@ -22,8 +22,12 @@ export default define(Brand, {
             control: "radio",
             options: ["small", "large", "big"],
         },
+        width: {
+            control: { type: "number", min: 200, max: 1500, step: 50 },
+        },
         "--color": {
             description: "Color",
+            defaultValue: "red",
         },
     },
 });

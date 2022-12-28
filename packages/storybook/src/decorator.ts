@@ -1,6 +1,7 @@
 import { addons, useEffect, DecoratorFunction } from "@storybook/addons";
 import { SNIPPET_RENDERED } from "@storybook/docs-tools";
 import { h, render, html } from "atomico";
+import { VNode } from "atomico/types/vnode";
 import { serialize } from "./serialize";
 
 const cache: {
@@ -16,6 +17,8 @@ class Wrapper extends HTMLElement {
 if (!customElements.get("atomico-decorator-wrapper"))
     customElements.define("atomico-decorator-wrapper", Wrapper);
 
+const isVnode = (value): value is VNode<any> => "$$" in value;
+
 export const decorator: DecoratorFunction<any> = (Story, context) => {
     let channel = addons.getChannel();
 
@@ -24,10 +27,7 @@ export const decorator: DecoratorFunction<any> = (Story, context) => {
         cache[context.id].setAttribute("data-id", context.id);
     }
 
-    let result = Story() as
-        | any[]
-        | { render?: (prev: Element) => Element; $$: symbol }
-        | string;
+    let result = Story() as any[] | VNode<any> | string;
 
     if (typeof result === "string") {
         render(h("host", null, html.call(null, [result])), cache[context.id]);
@@ -35,8 +35,31 @@ export const decorator: DecoratorFunction<any> = (Story, context) => {
         cache[context.id].innerHTML = "";
         cache[context.id].append(result);
     } else if (Array.isArray(result) || result.$$) {
+        if (isVnode(result)) {
+            const { props, cssProps } = Object.entries(result.props).reduce(
+                ({ props, cssProps }, [prop, value]) => {
+                    if (prop.startsWith("--") && value) {
+                        cssProps[prop] = value;
+                    } else {
+                        props[prop] = value;
+                    }
+                    return { props, cssProps };
+                },
+                {
+                    props: {} as { [prop: string]: any },
+                    cssProps: {} as { [prop: string]: any },
+                }
+            );
+            if (Object.keys(cssProps).length) {
+                result.props = {
+                    ...props,
+                    style: cssProps,
+                };
+            }
+        }
         render(h("host", null, result), cache[context.id]);
     } else if (result.render) {
+        //@ts-ignore
         result.render(cache[context.id]);
     }
 

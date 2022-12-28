@@ -1,7 +1,9 @@
 import "./disable-hmr";
 import { decorator, options } from "@atomico/storybook";
 
-options.markdown = true;
+options.ignore = {
+    "atomico-brand": ["children"],
+};
 
 options.global = {
     color: {
