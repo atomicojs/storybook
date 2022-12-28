@@ -77,7 +77,12 @@ export function define<Component extends Atomico<any, any>>(
     story.argTypes = [options.global, config?.argTypes].reduce(
         (argTypes, schema) => {
             if (!schema) return argTypes;
-            return Object.entries(schema).reduce((argTypes, [prop, value]) => {
+            let entries = Object.entries(schema);
+            // global props only apply if their declaration exists in the component props
+            if (schema === options.global)
+                entries = entries.filter(([prop]) => prop in props);
+
+            return entries.reduce((argTypes, [prop, value]) => {
                 if (value === false) {
                     delete argTypes[prop];
                 } else {
