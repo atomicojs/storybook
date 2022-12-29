@@ -10,6 +10,9 @@ options.global = {
     color: {
         category: "Appearance",
     },
+    view: {
+        control: "text",
+    },
 };
 
 export const parameters = {

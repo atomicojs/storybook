@@ -139,8 +139,10 @@ export function define<Component extends Atomico<any, any>>(
     );
 
     Object.entries(types).forEach(([prop, { control, defaultValue, type }]) => {
-        if (!story.argTypes?.[prop]) return;
+        if (story.argTypes?.[prop] === false) return;
+
         const argType = story.argTypes?.[prop] as Input;
+
         story.argTypes[prop] = {
             ...story.argTypes[prop],
             control: argType?.control || control,

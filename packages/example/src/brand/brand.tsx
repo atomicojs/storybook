@@ -57,6 +57,15 @@ brand.props = {
     backgroundColor: { type: String, reflect: true, value: "black" },
     date: String,
     focused: { type: Boolean, reflect: true, value: true },
+    theme: {
+        type: String,
+        reflect: true,
+        /**
+         *
+         * @returns {"nmp" | "fmp"}
+         */
+        value: () => "nmp",
+    },
 };
 
 brand.styles = css`
