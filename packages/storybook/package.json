@@ -17,8 +17,7 @@
     "devDependencies": {
         "@atomico/tsconfig": "*",
         "@storybook/addons": "*",
-        "atomico": "^1.68.0",
-        "snarkdown": "^2.0.0"
+        "atomico": "^1.68.0"
     },
     "peerDependencies": {
         "@storybook/addons": "*",

@@ -1,6 +1,5 @@
 import { Props } from "atomico";
 import { Atomico } from "atomico/types/dom";
-import snarkdown from "snarkdown";
 import { ArgTypes, Input, Table, Types } from "./types";
 import { options } from "./options";
 export { options } from "./options";
@@ -121,10 +120,6 @@ export function define<Component extends Atomico<any, any>>(
                             ...config?.table?.defaultValue,
                         },
                     };
-
-                    if (options.markdown && typeof description === "string") {
-                        description = snarkdown(description);
-                    }
 
                     return {
                         ...argTypes,

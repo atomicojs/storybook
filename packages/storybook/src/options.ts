@@ -5,7 +5,6 @@ export const options = {
     ignore: {} as {
         [tagName: string]: string[];
     },
-    markdown: false,
     alias: {
         [String.name]: "text",
         [Number.name]: "number",
