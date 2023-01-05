@@ -31,7 +31,7 @@ export const serialize = (
 
             if (!child[currentId] && !child[AtomicoID]) return html;
 
-            const props = (
+            const props = new Map<string, any>(
                 _props
                     ? Object.entries(_props).map(([prop, value]) => [
                           value?.attr || getAttr(prop),
@@ -41,18 +41,15 @@ export const serialize = (
                           attr.name,
                           attr.value,
                       ])
-            ) as [string, string][];
+            );
 
             if (_props) {
-                const attrs = Object.values(attributes).map((attr) => [
-                    attr.name,
-                    attr.value,
-                ]) as [string, string][];
-
-                props.push(...attrs);
+                Object.values(attributes).forEach((attr) =>
+                    props.set(attr.name, attr.value)
+                );
             }
 
-            const attrs = props
+            const attrs = [...props]
                 .filter(([prop]) => !ignore.includes(prop))
                 .reduce<string[]>((attrs, [prop, value]) => {
                     if (value != null) {
