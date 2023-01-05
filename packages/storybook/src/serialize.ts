@@ -43,6 +43,15 @@ export const serialize = (
                       ])
             ) as [string, string][];
 
+            if (_props) {
+                const attrs = Object.values(attributes).map((attr) => [
+                    attr.name,
+                    attr.value,
+                ]) as [string, string][];
+
+                props.push(...attrs);
+            }
+
             const attrs = props
                 .filter(([prop]) => !ignore.includes(prop))
                 .reduce<string[]>((attrs, [prop, value]) => {
