@@ -22,7 +22,7 @@ export const serialize = (
 
             if (options.ignore["*"]) ignore.push(...options.ignore["*"]);
 
-            const { _props = {} } = child as Element & {
+            const { _props = {}, constructor } = child as Element & {
                 _props?: { [prop: string]: any };
             };
 
@@ -32,20 +32,12 @@ export const serialize = (
             if (!child[currentId] && !child[AtomicoID]) return html;
 
             const props = new Map<string, any>(
-                _props
-                    ? Object.entries(_props).map(([prop, value]) => [
-                          value?.attr || getAttr(prop),
-                          value,
-                      ])
-                    : Object.values(attributes).map((attr) => [
-                          attr.name,
-                          attr.value,
-                      ])
+                Object.values(attributes).map((attr) => [attr.name, attr.value])
             );
 
             if (_props) {
-                Object.values(attributes).forEach((attr) =>
-                    props.set(attr.name, attr.value)
+                Object.entries(_props).forEach(([prop, value]) =>
+                    props.set(value?.attr || getAttr(prop), value)
                 );
             }
 
