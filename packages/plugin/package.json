@@ -15,14 +15,20 @@
     "author": "",
     "license": "ISC",
     "devDependencies": {
+        "@atomico/react": "*",
         "@atomico/tsconfig": "*",
         "@storybook/addons": "*",
-        "atomico": "^1.68.0"
+        "atomico": "^1.70.0"
     },
     "peerDependencies": {
+        "@atomico/react": "*",
         "@storybook/addons": "*",
-        "atomico": "*",
-        "snarkdown": "*"
+        "atomico": "*"
+    },
+    "peerDependenciesMeta": {
+        "@atomico/react": {
+            "optional": true
+        }
     },
     "module": "./dist/core.js",
     "exports": {
@@ -31,7 +37,8 @@
         "./decorator": "./dist/decorator.js",
         "./serialize": "./dist/serialize.js",
         "./types": "./dist/types.js",
-        "./options": "./dist/options.js"
+        "./options": "./dist/options.js",
+        "./react": "./dist/react.js"
     },
     "types": "types/core.d.ts",
     "typesVersions": {
@@ -50,6 +57,9 @@
             ],
             "options": [
                 "./types/options.d.ts"
+            ],
+            "react": [
+                "./types/react.d.ts"
             ]
         }
     }
