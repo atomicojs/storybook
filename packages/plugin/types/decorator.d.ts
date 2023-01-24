@@ -1,2 +1,4 @@
 import { DecoratorFunction } from "@storybook/addons";
-export declare const decorator: DecoratorFunction<any>;
+export declare const decorator: ({ jsx }: {
+    jsx?: boolean;
+}) => DecoratorFunction<any>;

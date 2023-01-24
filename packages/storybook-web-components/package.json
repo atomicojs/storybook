@@ -23,6 +23,7 @@
     },
     "devDependencies": {
         "@atomico/storybook": "*",
+        "vite": "latest",
         "@atomico/vite": "latest",
         "@storybook/addon-actions": "^6.5.15",
         "@storybook/addon-essentials": "^6.5.15",

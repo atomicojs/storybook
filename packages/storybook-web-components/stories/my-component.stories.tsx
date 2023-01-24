@@ -9,4 +9,8 @@ export default {
     argTypes,
 };
 
-export const myStory = () => <MyComponent></MyComponent>;
+export const myStory = (props) => (
+    <MyComponent {...props}>
+        <input type="checkbox" checked value="value ... " name="name other" />
+    </MyComponent>
+);
