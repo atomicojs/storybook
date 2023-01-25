@@ -1,6 +1,6 @@
 {
     "name": "@atomico/storybook",
-    "version": "1.9.5",
+    "version": "2.0.0",
     "public": true,
     "description": "Render Atomico's virtualDOM in Storybook",
     "type": "module",
@@ -8,7 +8,7 @@
         "access": "public"
     },
     "scripts": {
-        "exports": "exports src/*.ts --types --exports --main core --watch",
+        "exports": "exports src/*.ts --types --exports --main core",
         "prepublishOnly": "npm run exports"
     },
     "keywords": [],
