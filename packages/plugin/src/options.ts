@@ -14,7 +14,9 @@ export const options = {
         default: "text",
     },
     match: [
-        { regExp: /color/i, control: "color" },
-        { regExp: /date/i, control: "date" },
+        { regExp: /^color/, control: "color" },
+        { regExp: /\w+Color/, control: "color" },
+        { regExp: /^date/, control: "date" },
+        { regExp: /\w+Date/, control: "date" },
     ] as { regExp: RegExp; control: Controls; and?: any }[],
 };
