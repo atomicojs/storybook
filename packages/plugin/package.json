@@ -38,7 +38,9 @@
         "./serialize": "./dist/serialize.js",
         "./types": "./dist/types.js",
         "./options": "./dist/options.js",
-        "./react": "./dist/react.js"
+        "./react": "./dist/react.js",
+        "./serialize-dom": "./dist/serialize-dom.js",
+        "./serialize-jsx": "./dist/serialize-jsx.js"
     },
     "types": "types/core.d.ts",
     "typesVersions": {
@@ -60,6 +62,12 @@
             ],
             "react": [
                 "./types/react.d.ts"
+            ],
+            "serialize-dom": [
+                "./types/serialize-dom.d.ts"
+            ],
+            "serialize-jsx": [
+                "./types/serialize-jsx.d.ts"
             ]
         }
     }
