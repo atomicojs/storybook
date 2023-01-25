@@ -8,7 +8,7 @@
         "access": "public"
     },
     "scripts": {
-        "exports": "exports src/*.ts --types --exports --main core",
+        "exports": "exports src/*.ts --types --exports --main core --watch",
         "prepublishOnly": "npm run exports"
     },
     "keywords": [],

@@ -1,4 +1,4 @@
-import { ArgTypes, Input, Controls, Table, Types } from "./types";
+import { ArgTypes, Controls } from "./types";
 
 export const options = {
     global: {} as ArgTypes,

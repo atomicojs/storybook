@@ -5,6 +5,7 @@ const { args, argTypes } = define(MyComponent);
 
 export default {
     title: "my-component",
+    component: "my-element",
     args,
     argTypes,
 };

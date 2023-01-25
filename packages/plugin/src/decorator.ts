@@ -1,6 +1,6 @@
-import { addons, useEffect, DecoratorFunction } from "@storybook/addons";
+import { addons, useEffect } from "@storybook/addons";
 import { SNIPPET_RENDERED } from "@storybook/docs-tools";
-import { h, render, html } from "atomico";
+import { h, html, render } from "atomico";
 import { VNode } from "atomico/types/vnode";
 import { serializeDom } from "./serialize-dom";
 import { serializeJsx } from "./serialize-jsx";
@@ -9,7 +9,7 @@ const cache: {
     [id: string]: Element;
 } = {};
 
-class Wrapper extends HTMLElement {
+class Wrapper extends HTMLElemeónt {
     disconnectedCallback() {
         delete cache[this.dataset.id];
     }
