@@ -1,8 +1,9 @@
-import { addons, useEffect, DecoratorFunction } from "@storybook/addons";
+import { addons, useEffect } from "@storybook/addons";
 import { SNIPPET_RENDERED } from "@storybook/docs-tools";
-import { h, render, html } from "atomico";
+import { h, html, render } from "atomico";
 import { VNode } from "atomico/types/vnode";
-import { serialize } from "./serialize";
+import { serializeDom } from "./serialize-dom";
+import { serializeJsx } from "./serialize-jsx";
 
 const cache: {
     [id: string]: Element;
@@ -19,7 +20,7 @@ if (!customElements.get("atomico-decorator-wrapper"))
 
 const isVnode = (value): value is VNode<any> => "$$" in value;
 
-export const decorator: DecoratorFunction<any> = (Story, context) => {
+export const decorator = (Story, context) => {
     let channel = addons.getChannel();
 
     if (!cache[context.id]) {
@@ -65,11 +66,13 @@ export const decorator: DecoratorFunction<any> = (Story, context) => {
 
     let rendered = cache[context.id];
 
+    const isJsx = context.parameters.docs?.source?.language === "jsx";
+
     useEffect(() => {
         channel.emit(
             SNIPPET_RENDERED,
             context.id,
-            serialize(rendered.childNodes)
+            isJsx ? serializeJsx(result) : serializeDom(rendered.childNodes)
         );
     });
 

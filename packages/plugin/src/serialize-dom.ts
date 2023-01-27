@@ -8,7 +8,15 @@ const AtomicoID = Symbol.for("Atomico.ID");
 export const getAttr = (prop: string) =>
     prop.replace(/([A-Z])/g, "-$1").toLowerCase();
 
-export const serialize = (
+export const EMPTY_PROPS: { [prop: string]: any } = {};
+
+export const getType = (value: any) =>
+    ({}.toString
+        .call(value)
+        .replace(/(.+) (.+)]/, "$2")
+        .toLowerCase());
+
+export const serializeDom = (
     children: NodeList,
     tab = 0,
     currentId?: symbol | string
@@ -17,12 +25,13 @@ export const serialize = (
         let space = tab ? "   ".repeat(tab) : "";
 
         if (child instanceof Element) {
-            const { localName, childNodes, attributes } = child;
+            let { localName } = child;
+            const { childNodes, attributes } = child;
             const ignore = [...(options.ignore[localName] || [])];
 
             if (options.ignore["*"]) ignore.push(...options.ignore["*"]);
 
-            const { _props = {}, constructor } = child as Element & {
+            const { _props = EMPTY_PROPS, constructor } = child as Element & {
                 _props?: { [prop: string]: any };
             };
 
@@ -35,7 +44,7 @@ export const serialize = (
                 Object.values(attributes).map((attr) => [attr.name, attr.value])
             );
 
-            if (_props) {
+            if (_props != EMPTY_PROPS) {
                 Object.entries(_props).forEach(([prop, value]) =>
                     props.set(value?.attr || getAttr(prop), value)
                 );
@@ -43,35 +52,41 @@ export const serialize = (
 
             const attrs = [...props]
                 .filter(([prop]) => !ignore.includes(prop))
-                .reduce<string[]>((attrs, [prop, value]) => {
+                .map<string[] | false>(([prop, value]) => {
                     if (value != null) {
-                        let type = typeof value;
-                        let attr =
-                            type === "boolean"
-                                ? value
-                                    ? prop
-                                    : ""
-                                : type === "function"
-                                ? `${prop}=${type}`
-                                : `${prop}=${JSON.stringify(value)}`;
-                        attr && attrs.push(attr);
+                        const type = getType(value);
+                        switch (type) {
+                            case "boolean":
+                                return value ? [prop] : false;
+                            case "object":
+                            case "array":
+                                return [prop, `'${JSON.stringify(value)}'`];
+                            case "function":
+                                return [prop, type];
+                            default:
+                                return [prop, JSON.stringify(value)];
+                        }
                     }
                     return attrs;
-                }, []);
+                })
+                .filter((value) => value)
+                .map((value: string[]) => value.join("="));
 
             let content = ignore.includes("children")
                 ? ""
-                : serialize(childNodes, tab + 1, currentId);
+                : serializeDom(childNodes, tab + 1, currentId);
+
+            const isBr = content.includes("<");
 
             if (content) {
-                content += `\n${space}`;
+                content += `${isBr ? "\n" + space : ""}`;
             }
 
             html += `${space ? `\n${space}` : ""}<${localName}${
                 attrs.length ? ` ${attrs.join(" ")}` : ""
             }>${content}</${localName}>`;
         } else if (child.textContent.trim()) {
-            html += `\n${space}${child.textContent}`;
+            html += `${child.textContent}`;
         }
 
         return html;

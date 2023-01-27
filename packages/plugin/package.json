@@ -1,6 +1,6 @@
 {
     "name": "@atomico/storybook",
-    "version": "1.9.5",
+    "version": "2.0.0",
     "public": true,
     "description": "Render Atomico's virtualDOM in Storybook",
     "type": "module",
@@ -15,14 +15,20 @@
     "author": "",
     "license": "ISC",
     "devDependencies": {
+        "@atomico/react": "*",
         "@atomico/tsconfig": "*",
         "@storybook/addons": "*",
-        "atomico": "^1.68.0"
+        "atomico": "^1.70.0"
     },
     "peerDependencies": {
+        "@atomico/react": "*",
         "@storybook/addons": "*",
-        "atomico": "*",
-        "snarkdown": "*"
+        "atomico": "*"
+    },
+    "peerDependenciesMeta": {
+        "@atomico/react": {
+            "optional": true
+        }
     },
     "module": "./dist/core.js",
     "exports": {
@@ -31,7 +37,10 @@
         "./decorator": "./dist/decorator.js",
         "./serialize": "./dist/serialize.js",
         "./types": "./dist/types.js",
-        "./options": "./dist/options.js"
+        "./options": "./dist/options.js",
+        "./react": "./dist/react.js",
+        "./serialize-dom": "./dist/serialize-dom.js",
+        "./serialize-jsx": "./dist/serialize-jsx.js"
     },
     "types": "types/core.d.ts",
     "typesVersions": {
@@ -50,6 +59,15 @@
             ],
             "options": [
                 "./types/options.d.ts"
+            ],
+            "react": [
+                "./types/react.d.ts"
+            ],
+            "serialize-dom": [
+                "./types/serialize-dom.d.ts"
+            ],
+            "serialize-jsx": [
+                "./types/serialize-jsx.d.ts"
             ]
         }
     }
