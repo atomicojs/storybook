@@ -9,7 +9,7 @@ const cache: {
     [id: string]: Element;
 } = {};
 
-class Wrapper extends HTMLElemeónt {
+class Wrapper extends HTMLElement {
     disconnectedCallback() {
         delete cache[this.dataset.id];
     }
