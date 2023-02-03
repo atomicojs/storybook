@@ -6,7 +6,10 @@ export function serializeJsx(vnode: any, deep = 0) {
         let props = EMPTY_PROPS;
         let attrs = "";
         if (vnode?.$$ && vnode.type) {
-            localName = vnode.raw === 2 ? vnode.type?.name : vnode.type;
+            localName =
+                vnode.raw === 2
+                    ? vnode.type?.export || vnode.type?.name
+                    : vnode.type;
             props = vnode.props;
         }
 
