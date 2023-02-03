@@ -1,4 +1,5 @@
 import { MyComponent } from "./my-component";
+import { MyComponentSlot } from "./my-component-slot";
 import { define } from "@atomico/storybook";
 
 const { args, argTypes } = define(MyComponent);
@@ -23,5 +24,6 @@ export const myStory = (props) => (
             <span>icon</span>
             label...
         </button>
+        <MyComponentSlot slot="footer"></MyComponentSlot>
     </MyComponent>
 );

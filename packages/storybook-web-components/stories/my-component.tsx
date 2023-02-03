@@ -4,6 +4,10 @@ function myComponent(props) {
         <host shadowDom>
             <h1>Welcome!</h1>
             <code>{JSON.stringify(props)}</code>
+            <hr />
+            <slot></slot>
+            <hr />
+            <slot name="footer"></slot>
         </host>
     );
 }
