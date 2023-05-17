@@ -34,38 +34,5 @@
         "@atomico/react": {
             "optional": true
         }
-    },
-    "types": "types/core.d.ts",
-    "exports": {
-        "./react": "./lib/react.js",
-        "./assets/lib-1684332886050-8334da9e": "./lib/assets/lib-1684332886050-8334da9e.js",
-        "./chunks/5522-559f-5524": "./lib/chunks/5522-559f-5524.js",
-        "./chunks/86cc-8749-86ce": "./lib/chunks/86cc-8749-86ce.js",
-        "./assets/lib-1684332932702-8334da9e": "./lib/assets/lib-1684332932702-8334da9e.js"
-    },
-    "typesVersions": {
-        "*": {
-            "core": [
-                "types/core.d.ts"
-            ],
-            "decorator": [
-                "types/decorator.d.ts"
-            ],
-            "options": [
-                "types/options.d.ts"
-            ],
-            "react": [
-                "types/react.d.ts"
-            ],
-            "serialize-dom": [
-                "types/serialize-dom.d.ts"
-            ],
-            "serialize-jsx": [
-                "types/serialize-jsx.d.ts"
-            ],
-            "types": [
-                "types/types.d.ts"
-            ]
-        }
     }
 }
