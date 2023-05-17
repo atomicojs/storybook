@@ -8,7 +8,10 @@
         "access": "public"
     },
     "scripts": {
-        "exports": "exports src/*.ts --types --exports --main core",
+        "step:types": "tsc",
+        "step:build": "library src/**",
+        "step:exports": "exports types/** lib/** --main core",
+        "build": "npm run step:types && npm run step:build && npm run step:exports",
         "prepublishOnly": "npm run exports"
     },
     "keywords": [],
@@ -18,11 +21,13 @@
         "@atomico/react": "*",
         "@atomico/tsconfig": "*",
         "@storybook/addons": "*",
+        "@storybook/docs-tools": "*",
         "atomico": "^1.70.0"
     },
     "peerDependencies": {
         "@atomico/react": "*",
         "@storybook/addons": "*",
+        "@storybook/docs-tools": "*",
         "atomico": "*"
     },
     "peerDependenciesMeta": {
@@ -30,44 +35,36 @@
             "optional": true
         }
     },
-    "module": "./dist/core.js",
-    "exports": {
-        "./core": "./dist/core.js",
-        ".": "./dist/core.js",
-        "./decorator": "./dist/decorator.js",
-        "./serialize": "./dist/serialize.js",
-        "./types": "./dist/types.js",
-        "./options": "./dist/options.js",
-        "./react": "./dist/react.js",
-        "./serialize-dom": "./dist/serialize-dom.js",
-        "./serialize-jsx": "./dist/serialize-jsx.js"
-    },
     "types": "types/core.d.ts",
+    "exports": {
+        "./react": "./lib/react.js",
+        "./assets/lib-1684332886050-8334da9e": "./lib/assets/lib-1684332886050-8334da9e.js",
+        "./chunks/5522-559f-5524": "./lib/chunks/5522-559f-5524.js",
+        "./chunks/86cc-8749-86ce": "./lib/chunks/86cc-8749-86ce.js",
+        "./assets/lib-1684332932702-8334da9e": "./lib/assets/lib-1684332932702-8334da9e.js"
+    },
     "typesVersions": {
         "*": {
             "core": [
-                "./types/core.d.ts"
+                "types/core.d.ts"
             ],
             "decorator": [
-                "./types/decorator.d.ts"
-            ],
-            "serialize": [
-                "./types/serialize.d.ts"
-            ],
-            "types": [
-                "./types/types.d.ts"
+                "types/decorator.d.ts"
             ],
             "options": [
-                "./types/options.d.ts"
+                "types/options.d.ts"
             ],
             "react": [
-                "./types/react.d.ts"
+                "types/react.d.ts"
             ],
             "serialize-dom": [
-                "./types/serialize-dom.d.ts"
+                "types/serialize-dom.d.ts"
             ],
             "serialize-jsx": [
-                "./types/serialize-jsx.d.ts"
+                "types/serialize-jsx.d.ts"
+            ],
+            "types": [
+                "types/types.d.ts"
             ]
         }
     }

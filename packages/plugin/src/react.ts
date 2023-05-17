@@ -1,4 +1,4 @@
-import { DecoratorFunction } from "@storybook/addons";
+import type { DecoratorFunction } from "@storybook/types";
 import { auto } from "@atomico/react";
 
 const components = new Map();
