@@ -69,11 +69,17 @@ export const decorator = (Story, context) => {
     const isJsx = context.parameters.docs?.source?.language === "jsx";
 
     useEffect(() => {
-        channel.emit(
-            SNIPPET_RENDERED,
-            context.id,
-            isJsx ? serializeJsx(result) : serializeDom(rendered.childNodes)
-        );
+        // @storybook/web-component, privileges the original sources of the DOM
+        // with a time jump you can force the definition of the source
+        setTimeout(() => {
+            channel.emit(SNIPPET_RENDERED, {
+                id: context.id,
+                args: {},
+                source: isJsx
+                    ? serializeJsx(result)
+                    : serializeDom(rendered.childNodes),
+            });
+        }, 100);
     });
 
     return rendered;

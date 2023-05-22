@@ -6,7 +6,7 @@
         "start": "npm run storybook -w=example"
     },
     "dependencies": {
-        "@atomico/exports": "^1.4.6",
+        "@atomico/exports": "^1.5.0",
         "@atomico/run": "^0.3.0",
         "@atomico/vite": "^2.9.1",
         "typescript": "^4.7.4",

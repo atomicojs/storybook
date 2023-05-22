@@ -1,5 +1,5 @@
 import "./disable-hmr";
-import { decorator } from "@atomico/storybook";
+import { decorator } from "@atomico/storybook/decorator";
 
 export const parameters = {
     actions: { argTypesRegex: "^on.*" },

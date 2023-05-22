@@ -9,3 +9,5 @@ function myComponentSlot() {
 }
 
 export const MyComponentSlot = c(myComponentSlot);
+
+customElements.define("my-component-slot", MyComponentSlot);

@@ -18,3 +18,5 @@ myComponent.props = {
 };
 
 export const MyComponent = c(myComponent);
+
+customElements.define("my-component", MyComponent);
