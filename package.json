@@ -2,7 +2,7 @@
     "private": true,
     "scripts": {
         "exports": "npm run exports -w=@atomico/storybook",
-        "exports:publish": "run step:types step:build step:exports -w=@atomico/storybook",
+        "exports:publish": "npm publish -w=@atomico/storybook",
         "start": "npm run storybook -w=example"
     },
     "dependencies": {
