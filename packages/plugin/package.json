@@ -10,9 +10,7 @@
     "scripts": {
         "step:types": "tsc",
         "step:build": "library src/**",
-        "step:exports": "exports types/** src/** --main core",
-        "build": "npm run step:types  && npm run step:exports",
-        "prepublishOnly": "npm run exports"
+        "step:exports": "exports types/** src/** --main core"
     },
     "keywords": [],
     "author": "",
