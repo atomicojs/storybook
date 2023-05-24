@@ -11,7 +11,7 @@
         "step:types": "tsc",
         "step:build": "library src/**",
         "step:exports": "exports types/** lib/** --main core",
-        "prepublish": "npm run step:types && npm run step:build && npm run step:exports"
+        "prepublishOnly": "npm run step:types && npm run step:build && npm run step:exports"
     },
     "keywords": [],
     "author": "",
