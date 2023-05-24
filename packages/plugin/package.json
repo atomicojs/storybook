@@ -1,6 +1,6 @@
 {
     "name": "@atomico/storybook",
-    "version": "2.2.1",
+    "version": "2.2.2",
     "public": true,
     "description": "Render Atomico's virtualDOM in Storybook",
     "type": "module",
@@ -10,7 +10,7 @@
     "scripts": {
         "step:types": "tsc",
         "step:build": "library src/**",
-        "step:exports": "exports types/** src/** --main core",
+        "step:exports": "exports types/** lib/** --main core",
         "prepublish": "npm run step:types && npm run step:build && npm run step:exports"
     },
     "keywords": [],

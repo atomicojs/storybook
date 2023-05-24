@@ -4,9 +4,8 @@ import { decorator } from "@atomico/storybook/decorator";
 export const parameters = {
     actions: { argTypesRegex: "^on.*" },
     docs: {
-        story: { inline: false },
         source: {
-            language: "jsx",
+            // language: "jsx",
         },
     },
 };

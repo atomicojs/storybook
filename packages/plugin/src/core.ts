@@ -30,10 +30,6 @@ export function define<Component extends Atomico<any, any>>(
         args: {
             ...config?.args,
         },
-        parameters: {
-            actions: { argTypesRegex: "^on.*" },
-            ...config?.parameters,
-        },
     };
 
     const { props } = component;
@@ -160,8 +156,12 @@ export function define<Component extends Atomico<any, any>>(
                 },
             },
         };
-        story.args[prop] =
+        const argValue =
             prop in (story.args as any) ? story.args[prop] : defaultValue;
+
+        if (argValue != undefined) {
+            story.args[prop] = argValue;
+        }
     });
 
     return story;
