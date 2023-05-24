@@ -30,11 +30,13 @@ export const decorator = (Story, context) => {
 
     let result = Story() as any[] | VNode<any> | string;
 
+    const canvas = cache[context.id];
+
     if (typeof result === "string") {
-        render(h("host", null, html.call(null, [result])), cache[context.id]);
+        render(h("host", null, html.call(null, [result])), canvas);
     } else if (result instanceof Node) {
-        cache[context.id].innerHTML = "";
-        cache[context.id].append(result);
+        canvas.innerHTML = "";
+        canvas.append(result);
     } else if (Array.isArray(result) || result.$$) {
         if (isVnode(result)) {
             const { props, cssProps } = Object.entries(result.props).reduce(
@@ -58,29 +60,27 @@ export const decorator = (Story, context) => {
                 };
             }
         }
-        render(h("host", null, result), cache[context.id]);
+        render(h("host", null, result), canvas);
     } else if (result.render) {
         //@ts-ignore
-        result.render(cache[context.id]);
+        result.render(canvas);
     }
 
-    let rendered = cache[context.id];
+    let rendered = canvas;
 
     const isJsx = context.parameters.docs?.source?.language === "jsx";
 
     useEffect(() => {
-        // @storybook/web-component, privileges the original sources of the DOM
-        // with a time jump you can force the definition of the source
-        setTimeout(() => {
+        requestAnimationFrame(() => {
             channel.emit(SNIPPET_RENDERED, {
                 id: context.id,
-                args: {},
+                args: context.unmappedArgs,
                 source: isJsx
                     ? serializeJsx(result)
                     : serializeDom(rendered.childNodes),
             });
-        }, 100);
+        });
     });
 
-    return rendered;
+    return canvas;
 };
