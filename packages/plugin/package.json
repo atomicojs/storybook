@@ -34,18 +34,18 @@
             "optional": true
         }
     },
-    "main": "src/core.ts",
-    "module": "src/core.ts",
+    "main": "lib/core.js",
+    "module": "lib/core.js",
     "types": "types/core.d.ts",
     "exports": {
-        "./core": "./src/core.ts",
-        "./decorator": "./src/decorator.ts",
-        "./options": "./src/options.ts",
-        "./react": "./src/react.ts",
-        "./serialize-dom": "./src/serialize-dom.ts",
-        "./serialize-jsx": "./src/serialize-jsx.ts",
-        "./types": "./src/types.ts",
-        ".": "./src/core.ts"
+        "./core": "./lib/core.js",
+        "./decorator": "./lib/decorator.js",
+        "./options": "./lib/options.js",
+        "./react": "./lib/react.js",
+        "./serialize-dom": "./lib/serialize-dom.js",
+        "./serialize-jsx": "./lib/serialize-jsx.js",
+        "./types": "./lib/types.js",
+        ".": "./lib/core.js"
     },
     "typesVersions": {
         "*": {
