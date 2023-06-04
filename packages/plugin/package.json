@@ -13,7 +13,7 @@
         "build:exports": "exports types/** lib/** --main core",
         "dev:types": "tsc --watch",
         "dev:exports": "exports types/** src/** --main core --watch",
-        "prepublishOnly": "npm run step:types && npm run step:build && npm run step:exports"
+        "prepublishOnly": "npm run build:types && npm run build:build && npm run build:exports"
     },
     "keywords": [],
     "author": "",
