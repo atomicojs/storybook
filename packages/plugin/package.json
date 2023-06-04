@@ -12,7 +12,7 @@
         "build:compile": "library src/**",
         "build:exports": "exports types/** lib/** --main core",
         "dev:types": "tsc --watch",
-        "dev:exports": "exports types/** lib/** --main core --watch",
+        "dev:exports": "exports types/** src/** --main core --watch",
         "prepublishOnly": "npm run step:types && npm run step:build && npm run step:exports"
     },
     "keywords": [],
@@ -34,6 +34,44 @@
     "peerDependenciesMeta": {
         "@atomico/react": {
             "optional": true
+        }
+    },
+    "main": "src/core.ts",
+    "module": "src/core.ts",
+    "types": "types/core.d.ts",
+    "exports": {
+        "./core": "./src/core.ts",
+        "./decorator": "./src/decorator.tsx",
+        "./options": "./src/options.ts",
+        "./react": "./src/react.ts",
+        "./serialize-dom": "./src/serialize-dom.ts",
+        "./serialize-jsx": "./src/serialize-jsx.ts",
+        "./types": "./src/types.ts",
+        ".": "./src/core.ts"
+    },
+    "typesVersions": {
+        "*": {
+            "core": [
+                "types/core.d.ts"
+            ],
+            "decorator": [
+                "types/decorator.d.ts"
+            ],
+            "options": [
+                "types/options.d.ts"
+            ],
+            "react": [
+                "types/react.d.ts"
+            ],
+            "serialize-dom": [
+                "types/serialize-dom.d.ts"
+            ],
+            "serialize-jsx": [
+                "types/serialize-jsx.d.ts"
+            ],
+            "types": [
+                "types/types.d.ts"
+            ]
         }
     }
 }

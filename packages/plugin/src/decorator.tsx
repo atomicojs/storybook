@@ -1,10 +1,23 @@
-import { addons, useEffect } from "@storybook/addons";
+import { addons } from "@storybook/addons";
 import { SNIPPET_RENDERED } from "@storybook/docs-tools";
-import { h, Host, c, Props } from "atomico";
+import { h, c, Props, useEffect, useHost } from "atomico";
 import { serializeDom } from "./serialize-dom";
 import { serializeJsx } from "./serialize-jsx";
 
-function wrapper({ story }: Props<typeof wrapper>): Host<{ result: any }> {
+function wrapper({ story, cid, args, source }: Props<typeof wrapper>) {
+    const host = useHost();
+    useEffect(() => {
+        requestAnimationFrame(() => {
+            addons.getChannel().emit(SNIPPET_RENDERED, {
+                id: cid,
+                args,
+                source:
+                    source === "jsx"
+                        ? serializeJsx(result)
+                        : serializeDom(host.current.childNodes),
+            });
+        });
+    });
     const result = story();
     return h("host", { result }, result);
 }
@@ -12,6 +25,9 @@ function wrapper({ story }: Props<typeof wrapper>): Host<{ result: any }> {
 wrapper.props = {
     cid: String,
     story: Function,
+    source: null,
+    result: null,
+    args: null,
 };
 
 const Wrapper = c(wrapper);
@@ -24,37 +40,19 @@ if (!customElements.get("atomico-decorator-wrapper"))
     customElements.define("atomico-decorator-wrapper", Wrapper);
 
 export const decorator = (Story, context) => {
-    let channel = addons.getChannel();
-
     if (!cache[context.id]) {
         cache[context.id] = document.createElement(
             "atomico-decorator-wrapper"
         ) as InstanceType<typeof Wrapper>;
 
-        cache[context.id].setAttribute("data-id", context.id);
-
-        cache[context.id].unmounted.then(() => {
-            delete cache[context.id];
-        });
+        cache[context.id].setAttribute("cid", context.id);
     }
 
-    cache[context.id].story = Story;
+    const host = cache[context.id];
 
-    const isJsx = context.parameters.docs?.source?.language === "jsx";
+    host.story = Story;
+    host.args = context.unmappedArgs;
+    host.source = context.parameters.docs?.source?.language;
 
-    useEffect(() => {
-        requestAnimationFrame(async () => {
-            await cache[context.id].updated;
-
-            channel.emit(SNIPPET_RENDERED, {
-                id: context.id,
-                args: context.unmappedArgs,
-                source: isJsx
-                    ? serializeJsx(cache[context.id].result)
-                    : serializeDom(cache[context.id].childNodes),
-            });
-        });
-    });
-
-    return cache[context.id];
+    return host;
 };

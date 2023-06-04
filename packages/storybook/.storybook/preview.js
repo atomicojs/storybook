@@ -1,4 +1,3 @@
-import "./disable-hmr";
 import { decorator } from "@atomico/storybook/decorator";
 
 export const parameters = {
