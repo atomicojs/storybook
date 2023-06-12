@@ -20,7 +20,7 @@
         "create:component": "scaff component-storybook src"
     },
     "dependencies": {
-        "atomico": "^1.70.0"
+        "atomico": "^1.71.1"
     },
     "devDependencies": {
         "@atomico/storybook": "*",
