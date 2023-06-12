@@ -2,7 +2,7 @@
     "private": true,
     "scripts": {
         "exports": "npm run build:*",
-        "build:publish": "npm run build:* publish",
+        "build:publish": "run build:* publish",
         "start": "npm run start -w=web-components"
     },
     "dependencies": {
