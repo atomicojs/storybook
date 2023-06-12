@@ -1,71 +1,47 @@
-import { addons, useEffect } from '@storybook/addons';
+import { addons } from '@storybook/addons';
 import { SNIPPET_RENDERED } from '@storybook/docs-tools';
-import { render, h, html } from 'atomico';
+import { useHost, useEffect, h, c } from 'atomico';
 import { serializeDom } from './serialize-dom.js';
 import { serializeJsx } from './serialize-jsx.js';
 import './options.js';
 
-const cache = {};
-class Wrapper extends HTMLElement {
-  disconnectedCallback() {
-    delete cache[this.dataset.id];
-  }
-}
-if (!customElements.get("atomico-decorator-wrapper"))
-  customElements.define("atomico-decorator-wrapper", Wrapper);
-const isVnode = (value) => "$$" in value;
-const decorator = (Story, context) => {
-  let channel = addons.getChannel();
-  if (!cache[context.id]) {
-    cache[context.id] = document.createElement("atomico-decorator-wrapper");
-    cache[context.id].setAttribute("data-id", context.id);
-  }
-  let result = Story();
-  const canvas = cache[context.id];
-  if (typeof result === "string") {
-    render(h("host", null, html.call(null, [result])), canvas);
-  } else if (result instanceof Node) {
-    canvas.innerHTML = "";
-    canvas.append(result);
-  } else if (Array.isArray(result) || result.$$) {
-    if (isVnode(result)) {
-      const { props, cssProps } = Object.entries(result.props).reduce(
-        ({ props: props2, cssProps: cssProps2 }, [prop, value]) => {
-          if (prop.startsWith("--") && value) {
-            cssProps2[prop] = value;
-          } else {
-            props2[prop] = value;
-          }
-          return { props: props2, cssProps: cssProps2 };
-        },
-        {
-          props: {},
-          cssProps: {}
-        }
-      );
-      if (Object.keys(cssProps).length) {
-        result.props = {
-          ...props,
-          style: cssProps
-        };
-      }
-    }
-    render(h("host", null, result), canvas);
-  } else if (result.render) {
-    result.render(canvas);
-  }
-  let rendered = canvas;
-  const isJsx = context.parameters.docs?.source?.language === "jsx";
+function wrapper({ story, cid, args, source }) {
+  const host = useHost();
   useEffect(() => {
     requestAnimationFrame(() => {
-      channel.emit(SNIPPET_RENDERED, {
-        id: context.id,
-        args: context.unmappedArgs,
-        source: isJsx ? serializeJsx(result) : serializeDom(rendered.childNodes)
+      addons.getChannel().emit(SNIPPET_RENDERED, {
+        id: cid,
+        args,
+        source: source === "jsx" ? serializeJsx(result) : serializeDom(host.current.childNodes)
       });
     });
   });
-  return canvas;
+  const result = story();
+  return h("host", { result }, result);
+}
+wrapper.props = {
+  cid: String,
+  story: Function,
+  source: null,
+  result: null,
+  args: null
+};
+const Wrapper = c(wrapper);
+const cache = {};
+if (!customElements.get("atomico-decorator-wrapper"))
+  customElements.define("atomico-decorator-wrapper", Wrapper);
+const decorator = (Story, context) => {
+  if (!cache[context.id]) {
+    cache[context.id] = document.createElement(
+      "atomico-decorator-wrapper"
+    );
+    cache[context.id].setAttribute("cid", context.id);
+  }
+  const host = cache[context.id];
+  host.story = Story;
+  host.args = context.unmappedArgs;
+  host.source = context.parameters.docs?.source?.language;
+  return host;
 };
 
 export { decorator };
