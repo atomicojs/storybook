@@ -12,8 +12,7 @@
         "build:compile": "library src/**",
         "build:exports": "exports types/** lib/** --main core",
         "dev:types": "tsc --watch",
-        "dev:exports": "exports types/** src/** --main core --watch",
-        "prepublishOnly": "npm run build:types && npm run build:compile && npm run build:exports"
+        "dev:exports": "exports types/** src/** --main core --watch"
     },
     "keywords": [],
     "author": "",
