@@ -1,6 +1,6 @@
 export declare const decorator: (Story: any, context: any) => import("atomico/types/dom").AtomicoThis<{
-    cid?: string;
-    story?: (...args: any[]) => any;
+    cid?: unknown;
+    story?: unknown;
     source?: any;
     result?: any;
     args?: any;
