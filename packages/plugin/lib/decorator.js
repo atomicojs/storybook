@@ -17,13 +17,12 @@ function wrapper({ story, cid, args, source }) {
     });
   });
   const result = story();
-  return h("host", { result }, result);
+  return h("host", null, result);
 }
 wrapper.props = {
   cid: String,
   story: Function,
   source: null,
-  result: null,
   args: null
 };
 const Wrapper = c(wrapper);

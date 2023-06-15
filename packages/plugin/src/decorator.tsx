@@ -6,6 +6,7 @@ import { serializeJsx } from "./serialize-jsx";
 
 function wrapper({ story, cid, args, source }: Props<typeof wrapper>) {
     const host = useHost();
+
     useEffect(() => {
         requestAnimationFrame(() => {
             addons.getChannel().emit(SNIPPET_RENDERED, {
@@ -18,15 +19,16 @@ function wrapper({ story, cid, args, source }: Props<typeof wrapper>) {
             });
         });
     });
+    //@ts-ignore
     const result = story();
-    return h("host", { result }, result);
+
+    return h("host", null, result);
 }
 
 wrapper.props = {
     cid: String,
     story: Function,
     source: null,
-    result: null,
     args: null,
 };
 

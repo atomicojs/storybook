@@ -2,7 +2,6 @@ export declare const decorator: (Story: any, context: any) => import("atomico/ty
     cid?: unknown;
     story?: unknown;
     source?: any;
-    result?: any;
     args?: any;
 }, {
     new (): HTMLElement;
