@@ -3,6 +3,7 @@
     "include": ["src/**/*"],
     "compilerOptions": {
         "outDir": "types",
-        "allowSyntheticDefaultImports":true
+        "allowSyntheticDefaultImports":true,
+        "skipLibCheck": true
     }
 }
