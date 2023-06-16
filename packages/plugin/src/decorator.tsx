@@ -1,6 +1,6 @@
 import { addons } from "@storybook/addons";
 import { SNIPPET_RENDERED } from "@storybook/docs-tools";
-import { h, c, Props, useEffect, useHost } from "atomico";
+import { Props, c, h, useEffect, useHost } from "atomico";
 import { serializeDom } from "./serialize-dom";
 import { serializeJsx } from "./serialize-jsx";
 
@@ -9,18 +9,21 @@ function wrapper({ story, cid, args, source }: Props<typeof wrapper>) {
 
     useEffect(() => {
         requestAnimationFrame(() => {
+            console.log({ html: serializeDom(host.current.childNodes) });
             addons.getChannel().emit(SNIPPET_RENDERED, {
                 id: cid,
                 args,
                 source:
                     source === "jsx"
-                        ? serializeJsx(result)
+                        ? serializeJsx(host.result)
                         : serializeDom(host.current.childNodes),
             });
         });
     });
     //@ts-ignore
     const result = story();
+
+    host.result = result;
 
     return h("host", null, result);
 }
@@ -33,10 +36,6 @@ wrapper.props = {
 };
 
 const Wrapper = c(wrapper);
-
-const cache: {
-    [id: string]: InstanceType<typeof Wrapper>;
-} = {};
 
 if (!customElements.get("atomico-decorator-wrapper"))
     customElements.define("atomico-decorator-wrapper", Wrapper);

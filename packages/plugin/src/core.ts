@@ -1,8 +1,8 @@
 import { Atomico } from "atomico/types/dom";
-import { Meta, ArgTypes, Input, Table, Types } from "./types";
 import { options } from "./options";
-export { options } from "./options";
+import { ArgTypes, Input, Meta, Table, Types } from "./types";
 export * from "./decorator";
+export { options } from "./options";
 
 const getAutoControl = (prop: string, type?: any) =>
     options.match.find(({ regExp, and }) =>

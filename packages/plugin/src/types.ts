@@ -1,5 +1,5 @@
-import { Props } from "atomico";
 import { ComponentAnnotations, WebRenderer } from "@storybook/types";
+import { Props } from "atomico";
 
 export interface Render extends WebRenderer {}
 

@@ -2,8 +2,6 @@ import { MyComponent } from "./my-component";
 import { define } from "@atomico/storybook";
 import { useAsync } from "atomico";
 
-let id = 0;
-
 export default {
     title: "my-component",
     component: "my-element",
@@ -25,7 +23,7 @@ export const myStory1 = (props) => {
     const list = useAsync(() => todo, []);
     return (
         <ul>
-            {list.map((todo) => (
+            {list.slice(0, 4).map((todo) => (
                 <li>{todo.title}</li>
             ))}
         </ul>

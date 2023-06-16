@@ -1,5 +1,5 @@
-import type { DecoratorFunction } from "@storybook/types";
 import { auto } from "@atomico/react";
+import type { DecoratorFunction } from "@storybook/types";
 
 const components = new Map();
 const vnode = new Map();
