@@ -1,3 +1,9 @@
+import { ComponentAnnotations, WebRenderer } from "@storybook/types";
+
+interface AtomicoRender extends WebRenderer {}
+
+export type Meta = ComponentAnnotations<AtomicoRender, any>;
+
 export type Conditional =
     | (
           | {

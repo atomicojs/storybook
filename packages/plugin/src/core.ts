@@ -1,6 +1,6 @@
 import { Props } from "atomico";
 import { Atomico } from "atomico/types/dom";
-import { ArgTypes, Input, Table, Types } from "./types";
+import { Meta, ArgTypes, Input, Table, Types } from "./types";
 import { options } from "./options";
 export { options } from "./options";
 export * from "./decorator";
@@ -23,7 +23,7 @@ const getAutoControl = (prop: string, type?: any) =>
 export function define<Component extends Atomico<any, any>>(
     component: Component,
     config?: Config<Component>
-) {
+): Meta {
     const story: Config<Component> = {
         ...config,
         argTypes: {},
@@ -164,7 +164,7 @@ export function define<Component extends Atomico<any, any>>(
         }
     });
 
-    return story;
+    return story as Meta;
 }
 
 export const defineArgTypes = (
