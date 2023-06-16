@@ -21,7 +21,18 @@ const todo: Promise<
     response.json()
 );
 
-export const myStory = (props) => {
+export const myStory1 = (props) => {
+    const list = useAsync(() => todo, []);
+    return (
+        <ul>
+            {list.map((todo) => (
+                <li>{todo.title}</li>
+            ))}
+        </ul>
+    );
+};
+
+export const myStory2 = (props) => {
     const list = useAsync(() => todo, []);
     return (
         <ul>
