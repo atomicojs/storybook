@@ -42,6 +42,8 @@ if (!customElements.get("atomico-decorator-wrapper"))
     customElements.define("atomico-decorator-wrapper", Wrapper);
 
 export const decorator = (Story, context) => {
+    const cache = context.canvasElement;
+
     if (!cache[context.id]) {
         cache[context.id] = document.createElement(
             "atomico-decorator-wrapper"
