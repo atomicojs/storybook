@@ -1,3 +1,11 @@
+import { Props } from "atomico";
+import { ComponentAnnotations, WebRenderer } from "@storybook/types";
+export interface Render extends WebRenderer {
+}
+export type Meta<Component extends CustomElementConstructor> = Omit<ComponentAnnotations<Render, Props<Component>>, "argTypes" | "args"> & {
+    argTypes?: ArgTypes;
+    args?: Props<Component>;
+};
 export type Conditional = ({
     arg: string;
 } | {

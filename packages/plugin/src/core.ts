@@ -1,30 +1,19 @@
-import { Props } from "atomico";
 import { Atomico } from "atomico/types/dom";
 import { Meta, ArgTypes, Input, Table, Types } from "./types";
 import { options } from "./options";
 export { options } from "./options";
 export * from "./decorator";
 
-export interface Config<Component extends Atomico<any, any>> {
-    title?: string;
-    id?: string;
-    argTypes?: ArgTypes;
-    args?: Props<Component>;
-    component?: string;
-    subcomponents?: Record<string, string>;
-    [index: string]: any;
-}
-
 const getAutoControl = (prop: string, type?: any) =>
     options.match.find(({ regExp, and }) =>
         regExp.test(prop) ? (and ? type === and : true) : false
     );
 
-export function define<Component extends Atomico<any, any>>(
+export function define<Component extends CustomElementConstructor>(
     component: Component,
-    config?: Config<Component>
-): Meta {
-    const story: Config<Component> = {
+    config?: Meta<Component>
+) {
+    const story: Meta<Component> = {
         ...config,
         argTypes: {},
         args: {
@@ -32,7 +21,7 @@ export function define<Component extends Atomico<any, any>>(
         },
     };
 
-    const { props } = component;
+    const { props } = component as any;
 
     const types = Object.entries(props)
         .map(
@@ -164,7 +153,7 @@ export function define<Component extends Atomico<any, any>>(
         }
     });
 
-    return story as Meta;
+    return story as Meta<Component>;
 }
 
 export const defineArgTypes = (
