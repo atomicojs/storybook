@@ -1,26 +1,29 @@
 import { addons } from "@storybook/addons";
 import { SNIPPET_RENDERED } from "@storybook/docs-tools";
-import { Props, c, h, useEffect, useHost } from "atomico";
-import { serializeDom } from "./serialize-dom";
-import { serializeJsx } from "./serialize-jsx";
+import { StoryContext } from "@storybook/types";
+import { Props, Type, c, h, useEffect, useHost } from "atomico";
 
-function wrapper({ story, cid, args, source }: Props<typeof wrapper>) {
+type Source = "code" | "html";
+
+const Alias = {
+    tsx: "typescript",
+    html: "html",
+};
+
+function wrapper({ story, cid, args, code, source }: Props<typeof wrapper>) {
     const host = useHost();
 
     useEffect(() => {
         requestAnimationFrame(() => {
-            console.log({ html: serializeDom(host.current.childNodes) });
             addons.getChannel().emit(SNIPPET_RENDERED, {
                 id: cid,
                 args,
-                source:
-                    source === "jsx"
-                        ? serializeJsx(host.result)
-                        : serializeDom(host.current.childNodes),
+                source: source === "html" ? host.current.innerHTML : code,
+                ...(Alias[source] ? { format: Alias[source] } : null),
             });
         });
     });
-    //@ts-ignore
+
     const result = story();
 
     host.result = result;
@@ -31,7 +34,9 @@ function wrapper({ story, cid, args, source }: Props<typeof wrapper>) {
 wrapper.props = {
     cid: String,
     story: Function,
-    source: null,
+    originalSource: String,
+    code: String,
+    source: String as Type<Source>,
     args: null,
 };
 
@@ -40,22 +45,31 @@ const Wrapper = c(wrapper);
 if (!customElements.get("atomico-decorator-wrapper"))
     customElements.define("atomico-decorator-wrapper", Wrapper);
 
-export const decorator = (Story, context) => {
-    const cache = context.canvasElement;
+export const decorator =
+    ({ source }: { source?: Source } = { source: "code" }) =>
+    (Story: () => any, context: StoryContext) => {
+        const cache = context.canvasElement;
 
-    if (!cache[context.id]) {
-        cache[context.id] = document.createElement(
-            "atomico-decorator-wrapper"
-        ) as InstanceType<typeof Wrapper>;
+        if (!cache[context.id]) {
+            cache[context.id] = document.createElement(
+                "atomico-decorator-wrapper"
+            ) as InstanceType<typeof Wrapper>;
 
-        cache[context.id].setAttribute("cid", context.id);
-    }
+            cache[context.id].setAttribute("cid", context.id);
+        }
 
-    const host = cache[context.id];
+        const host = cache[context.id];
 
-    host.story = Story;
-    host.args = context.unmappedArgs;
-    host.source = context.parameters.docs?.source?.language;
+        host.story = Story;
+        host.args = context.unmappedArgs;
+        host.code = context.parameters.docs.source.originalSource;
+        host.source = source;
 
-    return host;
-};
+        const test = context.parameters.fileName.match(/\.(\w+)$/);
+
+        if (test) {
+            context.parameters.docs.source.language = test.at(1);
+        }
+
+        return host;
+    };

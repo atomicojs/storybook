@@ -22,7 +22,7 @@
         "@atomico/tsconfig": "*",
         "@storybook/addons": "*",
         "@storybook/docs-tools": "*",
-        "atomico": "^1.70.0"
+        "atomico": "^1.72.0"
     },
     "peerDependencies": {
         "@atomico/react": "*",
