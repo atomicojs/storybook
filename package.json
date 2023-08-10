@@ -4,7 +4,7 @@
         "exports": "run build:*",
         "build:atomico:storybook": "run build:*",
         "build:storybook": "npm run build -w=storybook",
-        "build:publish": "npm run build:atomico:storybook && npm run build:storybook && npm publish",
+        "build:publish": "npm run build:atomico:storybook && npm run build:storybook && npm publish -w=@atomico/storybook",
         "start": "npm run start -w=web-components"
     },
     "dependencies": {
