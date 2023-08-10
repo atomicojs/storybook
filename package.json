@@ -2,7 +2,9 @@
     "private": true,
     "scripts": {
         "exports": "run build:*",
-        "build:publish": "run build:* build publish -f",
+        "build:atomico:storybook": "run build:*",
+        "build:storybook": "npm run build -w=storybook",
+        "build:publish": "npm run build:atomico:storybook && npm run build:storybook && npm publish",
         "start": "npm run start -w=web-components"
     },
     "dependencies": {
