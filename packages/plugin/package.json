@@ -8,11 +8,10 @@
         "access": "public"
     },
     "scripts": {
-        "build:types": "tsc",
-        "build:compile": "library src/**",
-        "build:exports": "exports types/** lib/** --main core",
-        "dev:types": "tsc --watch",
-        "dev:exports": "exports types/** src/** --main core --watch"
+        "build:compile": "tsc",
+        "build:exports": "exports dist/** --main core",
+        "dev:compile": "tsc --watch",
+        "dev:exports": "exports dist/** --main core --watch"
     },
     "keywords": [],
     "author": "",
@@ -35,41 +34,41 @@
             "optional": true
         }
     },
-    "main": "lib/core.js",
-    "module": "lib/core.js",
-    "types": "types/core.d.ts",
+    "main": "dist/core.js",
+    "module": "dist/core.js",
+    "types": "dist/core.d.ts",
     "exports": {
-        "./core": "./lib/core.js",
-        "./decorator": "./lib/decorator.js",
-        "./options": "./lib/options.js",
-        "./react": "./lib/react.js",
-        "./serialize-dom": "./lib/serialize-dom.js",
-        "./serialize-jsx": "./lib/serialize-jsx.js",
-        "./types": "./lib/types.js",
-        ".": "./lib/core.js"
+        "./core": "./dist/core.js",
+        "./decorator": "./dist/decorator.js",
+        "./options": "./dist/options.js",
+        "./react": "./dist/react.js",
+        "./serialize-dom": "./dist/serialize-dom.js",
+        "./serialize-jsx": "./dist/serialize-jsx.js",
+        "./types": "./dist/types.js",
+        ".": "./dist/core.js"
     },
     "typesVersions": {
         "*": {
             "core": [
-                "types/core.d.ts"
+                "dist/core.d.ts"
             ],
             "decorator": [
-                "types/decorator.d.ts"
+                "dist/decorator.d.ts"
             ],
             "options": [
-                "types/options.d.ts"
+                "dist/options.d.ts"
             ],
             "react": [
-                "types/react.d.ts"
+                "dist/react.d.ts"
             ],
             "serialize-dom": [
-                "types/serialize-dom.d.ts"
+                "dist/serialize-dom.d.ts"
             ],
             "serialize-jsx": [
-                "types/serialize-jsx.d.ts"
+                "dist/serialize-jsx.d.ts"
             ],
             "types": [
-                "types/types.d.ts"
+                "dist/types.d.ts"
             ]
         }
     }

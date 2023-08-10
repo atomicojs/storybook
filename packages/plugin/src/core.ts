@@ -1,7 +1,7 @@
-import { Atomico } from "atomico/types/dom";
+import type { Atomico } from "atomico/types/dom";
 import { options } from "./options";
-import { ArgTypes, Input, Meta, Table, Types } from "./types";
-export * from "./decorator";
+import type { ArgTypes, Input, Meta, Table, Types } from "./types";
+export { decorator } from "./decorator";
 export { options } from "./options";
 
 const getAutoControl = (prop: string, type?: any) =>
