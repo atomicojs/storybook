@@ -7,10 +7,10 @@
     },
     "dependencies": {
         "@atomico/exports": "^1.5.0",
-        "@atomico/run": "^0.10.1",
+        "@atomico/run": "^0.11.0",
         "@atomico/vite": "^2.9.2",
         "typescript": "^5.1.3",
-        "vite": "^4.3.7"
+        "vite": "^4.4.9"
     },
     "workspaces": [
         "packages/*"
