@@ -1,7 +1,6 @@
 {
     "private": true,
     "scripts": {
-        "exports": "run build:*",
         "build": "run build:* -s",
         "dev:plugin": "run dev:* -w=@atomico/storybook",
         "dev:storybook": "run dev -w=storybook"
