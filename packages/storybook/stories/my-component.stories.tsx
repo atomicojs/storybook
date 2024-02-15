@@ -22,11 +22,14 @@ const todo: Promise<
 export const myStory1 = (props) => {
     const list = useAsync(() => todo, []);
     return (
-        <ul>
-            {list.slice(0, 4).map((todo) => (
-                <li>{todo.title}</li>
-            ))}
-        </ul>
+        <>
+            <ul>
+                {list.slice(0, 4).map((todo) => (
+                    <li>{todo.title}</li>
+                ))}
+            </ul>
+            <code>{JSON.stringify(props)}</code>
+        </>
     );
 };
 

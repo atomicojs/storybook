@@ -2,13 +2,12 @@
     "private": true,
     "scripts": {
         "exports": "run build:*",
-        "build:atomico:storybook": "run build:*",
-        "build:storybook": "npm run build -w=storybook",
-        "build:publish": "npm run build:atomico:storybook && npm run build:storybook && npm publish -w=@atomico/storybook",
-        "start": "npm run start -w=web-components"
+        "build": "run build:* -s",
+        "dev:plugin": "run dev:* -w=@atomico/storybook",
+        "dev:storybook": "run dev -w=storybook"
     },
     "dependencies": {
-        "@atomico/exports": "^1.5.0",
+        "@atomico/exports": "^1.13.2",
         "@atomico/run": "^0.12.0",
         "@atomico/vite": "^2.11.2",
         "typescript": "^5.1.3",

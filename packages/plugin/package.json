@@ -38,14 +38,42 @@
     "module": "dist/core.js",
     "types": "dist/core.d.ts",
     "exports": {
-        "./core": "./dist/core.js",
-        "./decorator": "./dist/decorator.js",
-        "./options": "./dist/options.js",
-        "./react": "./dist/react.js",
-        "./serialize-dom": "./dist/serialize-dom.js",
-        "./serialize-jsx": "./dist/serialize-jsx.js",
-        "./types": "./dist/types.js",
-        ".": "./dist/core.js"
+        "./core": {
+            "types": "./dist/core.d.ts",
+            "default": "./dist/core.js"
+        },
+        "./decorator": {
+            "types": "./dist/decorator.d.ts",
+            "default": "./dist/decorator.js"
+        },
+        "./options": {
+            "types": "./dist/options.d.ts",
+            "default": "./dist/options.js"
+        },
+        "./react": {
+            "types": "./dist/react.d.ts",
+            "default": "./dist/react.js"
+        },
+        "./serialize-dom": {
+            "types": "./dist/serialize-dom.d.ts",
+            "default": "./dist/serialize-dom.js"
+        },
+        "./serialize-jsx": {
+            "types": "./dist/serialize-jsx.d.ts",
+            "default": "./dist/serialize-jsx.js"
+        },
+        "./types": {
+            "types": "./dist/types.d.ts",
+            "default": "./dist/types.js"
+        },
+        ".": {
+            "types": "./dist/core.d.ts",
+            "default": "./dist/core.js"
+        },
+        "./hooks": {
+            "types": "./dist/hooks.d.ts",
+            "default": "./dist/hooks.js"
+        }
     },
     "typesVersions": {
         "*": {
@@ -69,6 +97,9 @@
             ],
             "types": [
                 "dist/types.d.ts"
+            ],
+            "hooks": [
+                "dist/hooks.d.ts"
             ]
         }
     }

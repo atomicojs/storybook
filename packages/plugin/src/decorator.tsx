@@ -1,4 +1,4 @@
-import { addons } from "@storybook/addons";
+import { addons, useEffect as useStorybookEffect } from "@storybook/addons";
 import { SNIPPET_RENDERED } from "@storybook/docs-tools";
 import { StoryContext } from "@storybook/types";
 import { Props, Type, c, h, useEffect, useHost } from "atomico";
@@ -9,6 +9,8 @@ const Alias = {
     tsx: "typescript",
     html: "html",
 };
+
+const props = { style: "display:contents" };
 
 function wrapper({ story, cid, args, code, source }: Props<typeof wrapper>) {
     const host = useHost();
@@ -28,7 +30,7 @@ function wrapper({ story, cid, args, code, source }: Props<typeof wrapper>) {
 
     host.result = result;
 
-    return h("host", null, result);
+    return h("host", props, result);
 }
 
 wrapper.props = {
@@ -46,11 +48,40 @@ if (!customElements.get("atomico-decorator-wrapper"))
     customElements.define("atomico-decorator-wrapper", Wrapper);
 
 export const decorator =
-    ({ source }: { source?: Source } = { source: "code" }) =>
+    (
+        {
+            source,
+            forceRemount,
+        }: { source?: Source; forceRemount?: boolean } = { source: "code" }
+    ) =>
     (Story: () => any, context: StoryContext) => {
-        const cache = context.canvasElement;
+        const cache = context.canvasElement as HTMLElement;
+
+        useStorybookEffect(() => () => host.remove(), []);
 
         if (!cache[context.id]) {
+            // Avoid double insertion by @storybook/web-components
+            if (!forceRemount) {
+                try {
+                    Object.defineProperty(cache, "innerHTML", {
+                        set() {
+                            return "";
+                        },
+                        get() {
+                            return "";
+                        },
+                    });
+
+                    Object.defineProperty(cache, "appendChild", {
+                        value: (element: HTMLElement) => {
+                            if (!host.isConnected) {
+                                cache.append(element);
+                            }
+                        },
+                    });
+                } catch {}
+            }
+
             cache[context.id] = document.createElement(
                 "atomico-decorator-wrapper"
             ) as InstanceType<typeof Wrapper>;
@@ -69,6 +100,14 @@ export const decorator =
 
         if (test) {
             context.parameters.docs.source.language = test.at(1);
+        }
+
+        // Avoid double insertion by @storybook/web-components
+        if (!forceRemount) {
+            if (!host.isConnected) {
+                cache.append(host);
+            }
+            return "";
         }
 
         return host;

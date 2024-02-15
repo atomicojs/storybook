@@ -15,9 +15,8 @@
     "private": true,
     "type": "module",
     "scripts": {
-        "start": "storybook dev -p 6006",
-        "build": "storybook build",
-        "create:component": "scaff component-storybook src"
+        "dev": "storybook dev -p 6006",
+        "build:storybook": "storybook build"
     },
     "dependencies": {
         "atomico": "^1.71.1"
