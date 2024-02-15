@@ -2,6 +2,7 @@
     "private": true,
     "scripts": {
         "build": "run build:* -s",
+        "build:publish": "run build:* -s && npm publish -w=@atomico/storybook",
         "dev:plugin": "run dev:* -w=@atomico/storybook",
         "dev:storybook": "run dev -w=storybook"
     },
