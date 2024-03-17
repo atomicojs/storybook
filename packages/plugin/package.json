@@ -1,6 +1,6 @@
 {
     "name": "@atomico/storybook",
-    "version": "2.6.0",
+    "version": "2.6.1",
     "public": true,
     "description": "Render Atomico's virtualDOM in Storybook",
     "type": "module",
@@ -19,14 +19,10 @@
     "devDependencies": {
         "@atomico/react": "*",
         "@atomico/tsconfig": "*",
-        "@storybook/addons": "*",
-        "@storybook/docs-tools": "*",
         "atomico": "^1.72.0"
     },
     "peerDependencies": {
         "@atomico/react": "*",
-        "@storybook/addons": "*",
-        "@storybook/docs-tools": "*",
         "atomico": "*"
     },
     "peerDependenciesMeta": {

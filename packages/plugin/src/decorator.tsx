@@ -1,7 +1,10 @@
-import { addons, useEffect as useStorybookEffect } from "@storybook/addons";
+import {
+    addons,
+    useEffect as useStorybookEffect,
+} from "@storybook/preview-api";
 import { SNIPPET_RENDERED } from "@storybook/docs-tools";
 import { StoryContext } from "@storybook/types";
-import { Props, Type, c, h, useEffect, useHost } from "atomico";
+import { Props, Type, c, h, useEffect, useHost, render } from "atomico";
 
 type Source = "code" | "html";
 
@@ -57,7 +60,10 @@ export const decorator =
     (Story: () => any, context: StoryContext) => {
         const cache = context.canvasElement as HTMLElement;
 
-        useStorybookEffect(() => () => host.remove(), []);
+        useStorybookEffect(() => {
+            const story = Story();
+            render(<host>{story}</host>, cache);
+        }, [context.id]);
 
         if (!cache[context.id]) {
             // Avoid double insertion by @storybook/web-components
@@ -81,12 +87,6 @@ export const decorator =
                     });
                 } catch {}
             }
-
-            cache[context.id] = document.createElement(
-                "atomico-decorator-wrapper"
-            ) as InstanceType<typeof Wrapper>;
-
-            cache[context.id].setAttribute("cid", context.id);
         }
 
         const host = cache[context.id];
@@ -110,5 +110,5 @@ export const decorator =
             return "";
         }
 
-        return host;
+        return new Comment("Atomico.decorator");
     };
