@@ -60,10 +60,7 @@ export const decorator =
     (Story: () => any, context: StoryContext) => {
         const cache = context.canvasElement as HTMLElement;
 
-        useStorybookEffect(() => {
-            const story = Story();
-            render(<host>{story}</host>, cache);
-        }, [context.id]);
+        useStorybookEffect(() => () => host.remove(), []);
 
         if (!cache[context.id]) {
             // Avoid double insertion by @storybook/web-components
@@ -116,5 +113,5 @@ export const decorator =
             return "";
         }
 
-        return new Comment("Atomico.decorator");
+        return host;
     };
