@@ -87,6 +87,12 @@ export const decorator =
                     });
                 } catch {}
             }
+
+            cache[context.id] = document.createElement(
+                "atomico-decorator-wrapper"
+            ) as InstanceType<typeof Wrapper>;
+
+            cache[context.id].setAttribute("cid", context.id);
         }
 
         const host = cache[context.id];
